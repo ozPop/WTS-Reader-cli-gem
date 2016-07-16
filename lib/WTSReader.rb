@@ -28,8 +28,8 @@ module WTSReader
       # Set's title before sanitizing in case title was removed in the filters
       set_title
       tag_noise = ['head', 'header', 'footer', 'script', 'style', 'img', 'video', 'audio', 'figure', 'figcaption', 'param', '.related']
-      xpath_noise = ["//*[contains(.,'facebook')]", "//@*[contains(.,'twitter')]", "//@*[contains(.,'whatsapp')]", "//@*[contains(.,'pinterest')]", "//*[contains(.,'topbar')]"]
-      xpath_noise.each {|x| @doc.search(x).remove()}
+      # xpath_noise = ["//*[contains(.,'facebook')]", "//@*[contains(.,'twitter')]", "//@*[contains(.,'whatsapp')]", "//@*[contains(.,'pinterest')]"]
+      # xpath_noise.each {|x| @doc.search(x).remove()}
       tag_noise.each {|t| @doc.search(t).remove()}
     end
     def get_text
