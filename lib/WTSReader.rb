@@ -24,7 +24,7 @@ module WTSReader
     def sanitize_document
       # Set's title before sanitizing in case title was removed in the filters
       set_title
-      tag_noise = ['head', 'header', 'footer', 'script', 'style', 'img', 'video', 'audio']
+      tag_noise = ['head', 'header', 'footer', 'script', 'style', 'img', 'video', 'audio', 'figure', 'figcaption', 'param', '.related', "//*[contains(.,'topbar')]", "//*[contains(.,'related')]"]
       xpath_noise = ["//*[contains(.,'facebook')]", "//@*[contains(.,'twitter')]", "//@*[contains(.,'whatsapp')]", "//@*[contains(.,'pinterest')]"]
       xpath_noise.each {|x| @doc.search(x).remove()}
       tag_noise.each {|t| @doc.search(t).remove()}
