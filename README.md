@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # WTS-Reader-cli-gem
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/WTSReader`. To experiment with that code, run `bin/console` for an interactive prompt.
@@ -35,6 +34,3 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/WTSReader. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
-=======
-# WTS-Reader-cli-gem
->>>>>>> 7590ff9b9179b6310fe5943665df2c2abf007131
