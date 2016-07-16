@@ -1,10 +1,16 @@
-# WTS-Reader-cli-gem
+# WTS-Reader-Cli-Gem
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/WTSReader`. To experiment with that code, run `bin/console` for an interactive prompt.
+----
 
-TODO: Delete this and the text above, and describe your gem
+## Gem Overview
+
+----
+
+This ruby CLI gem uses native text-to-speech capabilities to read certain web pages to the user. It takes in URL as paramater or gives an option to choose a source and an artice. In either case the program returns a spoken version of the content of that URL using built in text-to-speech software.
 
 ## Installation
+
+----
 
 Add this line to your application's Gemfile:
 
@@ -22,7 +28,13 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+----
+
+Run the below command and follow instructions
+
+```
+$ wts-reader
+```
 
 ## Development
 
