@@ -32,6 +32,9 @@ module WTSReader
     def set_title
       @title = @doc.title
     end
+    def get_text
+      @title + @doc.text.gsub('\n', ' ').gsub('"', '\"')
+    end
     ## INTERFACE WITH SAY
     # determines if the kernel is `xnu` (OSX) or not (implied GNU Linux/BSD)
     # not used but possibly will be implemented for wider UNIX compatibility
@@ -46,7 +49,7 @@ module WTSReader
     def push_to_say
       sanitize_document
       # need to build get_text function to sanitize text for pushing to `say`/unix cl
-      text = @title + @doc.text.gsub('\n', ' ').gsub('"', '\"')
+      text = get_text
       %x{ say -r #{@rate} -v #{@voice} -o #{@path + @filename + @ext} \"#{text}\" }
       %x{ open #{@path + @filename + @ext} }
     end
