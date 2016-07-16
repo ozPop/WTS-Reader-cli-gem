@@ -12,9 +12,9 @@ Ozzie
   
 Blaze
 * add coding done so far
-    * HTML sanitization to Readme class
+    * HTML sanitization to Reader class
     * Reader class intefacing with text-to-speech
-    * Other
+    * 
 
 ----
 
@@ -60,7 +60,7 @@ Blaze
 
 ### Handling files
 
-  * Save all files to /temp and that takes care of space management automatically
+  * Save all files to /tmp and that takes care of space management automatically
 
 
 ### Text to speech software access usding command line
