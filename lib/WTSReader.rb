@@ -19,7 +19,7 @@ module WTSReader
     def text
       @doc.text
     end
-    # HTML PARSING
+    ## HTML PARSING
     def sanitize_document
       # Set's title before sanitizing in case title was removed in the filters
       set_title
@@ -30,6 +30,17 @@ module WTSReader
     end
     def set_title
       @title = @doc.title
+    end
+    ## INTERFACE WITH SAY
+    # determines if the kernel is `xnu` (OSX) or not (implied GNU Linux/BSD)
+    # not used but possibly will be implemented for wider UNIX compatibility
+    def set_speaker
+      @reader = %x{ uname -v }.match(/root:xnu-\d+\.\d+/) ? "say" : "espeak"
+    end
+    # sets the voice manually. this will have to be built out with the cli
+    def set_voice(voice)
+      # Hash of {:language => [voice1, voice2, ...], language2 => [...], ...} goes here
+      @voice = voice
     end
   end
 end
