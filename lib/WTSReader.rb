@@ -38,9 +38,9 @@ module WTSReader
     ## INTERFACE WITH SAY
     # determines if the kernel is `xnu` (OSX) or not (implied GNU Linux/BSD)
     # not used but possibly will be implemented for wider UNIX compatibility
-    def set_speaker
-      @reader = %x{ uname -v }.match(/root:xnu-\d+\.\d+/) ? "say" : "espeak"
-    end
+    # def set_speaker
+    #   @reader = %x{ uname -v }.match(/root:xnu-\d+\.\d+/) ? "say" : "espeak"
+    # end
     # sets the voice manually. this will have to be built out with the cli
     def set_voice(voice)
       # Hash of {:language => [voice1, voice2, ...], language2 => [...], ...} goes here
@@ -48,7 +48,6 @@ module WTSReader
     end
     def push_to_say
       sanitize_document
-      # need to build get_text function to sanitize text for pushing to `say`/unix cl
       text = get_text
       %x{ say -r #{@rate} -v #{@voice} -o #{@path + @filename + @ext} \"#{text}\" }
       %x{ open #{@path + @filename + @ext} }
