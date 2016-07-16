@@ -1,0 +1,3 @@
+class WTSReader::Cli
+
+end
