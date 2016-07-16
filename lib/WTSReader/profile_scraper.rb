@@ -1,9 +1,10 @@
 module WTSReader
   class Profiles
-    def self.match?(url)
-      if url.match(/theguardian.com/) || url.match(/theguardian.co.uk/)
-	get_guardian_text(url)
+    def self.guardian_match?(url)
+      if url.match(/.+theguardian.com.+/i) || url.match(/.+theguardian.co.uk.+/i)
+	return true
       end
+      false
     end
     def self.guardian_parse(doc)
       @headline = doc.css("h1.content__headline").text
@@ -14,7 +15,7 @@ module WTSReader
     end
     def self.get_guardian_text(doc)
       guardian_parse(doc)
-      "#{@headline}\n\nBy #{@author}\n\n#{@blurb}\nPublication date: #{@date}\n#{@content}"
+      text = "#{@headline}\n\nBy #{@author}\n\n#{@blurb}\nPublication date: #{@date}\n#{@content}".gsub('"', '\"')
     end
   end
 end

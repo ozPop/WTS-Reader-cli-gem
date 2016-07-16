@@ -5,6 +5,7 @@ class WTSReader::Reader
   attr_accessor :rate, :voice, :path
   # default values are set for temporary files with default OSX voice at default rate (in word-per-minute)
   def initialize(url, rate=205, voice='Alex', path='/tmp/', ext='.aac')
+    @url = url
     @doc = Nokogiri::HTML(open(url))
     @rate = rate
     @voice = voice
@@ -59,9 +60,13 @@ speeds[rate.to_sym]
     @path + @filename + @ext
   end
   def push_to_say
-    sanitize_document
-    get_text
-    text = @text
+    if WTSReader::Profiles.guardian_match?(@url)
+      text = WTSReader::Profiles.get_guardian_text(@doc)
+    else
+      sanitize_document
+      get_text
+      text = @text
+    end
     %x{ say -r #{@rate} -v #{@voice} -o #{get_file_location} \"#{text}\" }
     begin
 %x{ open #{get_file_location} }
