@@ -57,11 +57,14 @@ module WTSReader
 	"Speed setting `#{rate}` not understood"
       end
     end
+    def get_file_location
+      @path + @filename + @ext
+    end
     def push_to_say
       sanitize_document
       text = get_text
-      %x{ say -r #{@rate} -v #{@voice} -o #{@path + @filename + @ext} \"#{text}\" }
-      %x{ open #{@path + @filename + @ext} }
+      %x{ say -r #{@rate} -v #{@voice} -o #{get_file_location} \"#{text}\" }
+      %x{ open #{get_file_location} }
     end
   end
 end
