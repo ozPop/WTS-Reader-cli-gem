@@ -15,7 +15,7 @@ module WTSReader
       @voice = voice
       @path = path
       @ext = ext
-      @filename = url.split('/')[-1].split('.')[0]
+      @filename = Random.new.to_s.split(':')[1][0..-2]
     end
     def text
       @doc.text
@@ -27,13 +27,16 @@ module WTSReader
     def sanitize_document
       # Set's title before sanitizing in case title was removed in the filters
       set_title
-      tag_noise = ['head', 'header', 'footer', 'script', 'style', 'img', 'video', 'audio', 'figure', 'figcaption', 'param', '.related', "//*[contains(.,'topbar')]", "//*[contains(.,'related')]"]
-      xpath_noise = ["//*[contains(.,'facebook')]", "//@*[contains(.,'twitter')]", "//@*[contains(.,'whatsapp')]", "//@*[contains(.,'pinterest')]"]
+      tag_noise = ['head', 'header', 'footer', 'script', 'style', 'img', 'video', 'audio', 'figure', 'figcaption', 'param', '.related']
+      xpath_noise = ["//*[contains(.,'facebook')]", "//@*[contains(.,'twitter')]", "//@*[contains(.,'whatsapp')]", "//@*[contains(.,'pinterest')]", "//*[contains(.,'topbar')]"]
       xpath_noise.each {|x| @doc.search(x).remove()}
       tag_noise.each {|t| @doc.search(t).remove()}
     end
     def get_text
-      @title + @doc.text.gsub('\n', ' ').gsub('"', '\"')
+      @text = @title + @doc.text.gsub('\n', ' ').gsub('"', '\"')
+      if @text
+	true
+      end
     end
     ## INTERFACE WITH SAY
     # determines if the kernel is `xnu` (OSX) or not (implied GNU Linux/BSD)
@@ -62,9 +65,14 @@ module WTSReader
     end
     def push_to_say
       sanitize_document
-      text = get_text
+      get_text
+      text = @text
       %x{ say -r #{@rate} -v #{@voice} -o #{get_file_location} \"#{text}\" }
-      %x{ open #{get_file_location} }
+      begin
+	%x{ open #{get_file_location} }
+      rescue
+	%x{ open #{@path + @filename + ".aiff"} }
+      end
     end
   end
 end
