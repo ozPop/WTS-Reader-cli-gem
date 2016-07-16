@@ -46,6 +46,17 @@ module WTSReader
       # Hash of {:language => [voice1, voice2, ...], language2 => [...], ...} goes here
       @voice = voice
     end
+    def set_speed(rate)
+      # allows used to set words-per-minute manually
+      return rate if rate.is_a?(integer)
+      # otherwise gives user-friendly options
+      speeds = {:slowest => 130, :slow => 170, :average => 205, :fast => 225, :fastest => 270}
+      if speeds.include?(rate.to_sym)
+	speeds[rate.to_sym]
+      else
+	"Speed setting `#{rate}` not understood"
+      end
+    end
     def push_to_say
       sanitize_document
       text = get_text
