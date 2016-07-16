@@ -21,6 +21,9 @@ module WTSReader
       @doc.text
     end
     ## HTML PARSING
+    def set_title
+      @title = @doc.title
+    end
     def sanitize_document
       # Set's title before sanitizing in case title was removed in the filters
       set_title
@@ -28,9 +31,6 @@ module WTSReader
       xpath_noise = ["//*[contains(.,'facebook')]", "//@*[contains(.,'twitter')]", "//@*[contains(.,'whatsapp')]", "//@*[contains(.,'pinterest')]"]
       xpath_noise.each {|x| @doc.search(x).remove()}
       tag_noise.each {|t| @doc.search(t).remove()}
-    end
-    def set_title
-      @title = @doc.title
     end
     def get_text
       @title + @doc.text.gsub('\n', ' ').gsub('"', '\"')
