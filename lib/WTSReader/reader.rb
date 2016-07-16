@@ -61,10 +61,8 @@ speeds[rate.to_sym]
   end
   def push_to_say
     match = WTSReader::Profile.any_matches?(@url)
-    if match
-      puts match
-      text = WTSReader::Profile.send(match, @doc)
-      binding.pry
+    if match 
+      text = WTSReader::Profile.send(match, @doc) 
     else
       sanitize_document
       get_text

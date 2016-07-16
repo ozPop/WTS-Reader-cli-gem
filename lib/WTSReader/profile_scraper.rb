@@ -21,10 +21,12 @@ module WTSReader
       "#{@headline}\n\nBy #{@author}\n\n#{@blurb}\nPublication date: #{@date}\n#{@content}".gsub('"', '\"')
     end
     def self.stackoverflow_parse(doc)
-      @title = doc.css("a.question-hyperlink").text
-      @question = doc.css("div.question").text
-      @accepted_answer = doc.css("div.accepted-answer").text
-      @answers = doc.css("div.answer").text
+      doc.css(".everyonelovesstackoverflow").remove()
+      doc.css("script").remove()
+      @title = doc.css("h1 a.question-hyperlink").text
+      @question = doc.css("div#mainbar div.question").text
+      @accepted_answer = doc.css("div#mainbar div.accepted-answer").text
+      @answers = doc.css("div#mainbar div#answers div.answer").text
     end
     def self.stackoverflow_match?(url)
       if url.match(/.+stackoverflow.com\/question.+/i)
@@ -33,9 +35,8 @@ module WTSReader
       false
     end
     def self.get_stackoverflow_text(doc)
-      stackoverflow_parse(doc)
-      puts "#{@title}\n\n#{@question}\n\nAccepted Answer: #{@accepted_answer}\n\n#{@answers}"
-      "#{@title}\n\n#{@question}\n\nAccepted Answer: #{@accepted_answer}\n\n#{@answers}".gsub('"', '\"')
+      stackoverflow_parse(doc) 
+      "#{@title}\n\nQuestion:\n#{@question}\n\n#{@accepted_answer}\n\n#{@answers}".gsub('"', '\"')
     end
   end
 end
