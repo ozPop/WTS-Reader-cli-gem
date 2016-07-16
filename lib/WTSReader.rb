@@ -15,6 +15,7 @@ module WTSReader
       @voice = voice
       @path = path
       @ext = ext
+      @filename = url.split('/')[-1].split('.')[0]
     end
     def text
       @doc.text
@@ -41,6 +42,13 @@ module WTSReader
     def set_voice(voice)
       # Hash of {:language => [voice1, voice2, ...], language2 => [...], ...} goes here
       @voice = voice
+    end
+    def push_to_say
+      sanitize_document
+      # need to build get_text function to sanitize text for pushing to `say`/unix cl
+      text = @title + @doc.text.gsub('\n', ' ').gsub('"', '\"')
+      %x{ say -r #{@rate} -v #{@voice} -o #{@path + @filename + @ext} \"#{text}\" }
+      %x{ open #{@path + @filename + @ext} }
     end
   end
 end
