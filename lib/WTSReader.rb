@@ -1,4 +1,6 @@
 require "WTSReader/version"
+require "nokogiri"
+require "open-uri"
 
 module WTSReader
   class Reader
