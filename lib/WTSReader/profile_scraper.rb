@@ -18,7 +18,23 @@ module WTSReader
     end
     def self.get_guardian_text(doc)
       guardian_parse(doc)
-      text = "#{@headline}\n\nBy #{@author}\n\n#{@blurb}\nPublication date: #{@date}\n#{@content}".gsub('"', '\"')
+      "#{@headline}\n\nBy #{@author}\n\n#{@blurb}\nPublication date: #{@date}\n#{@content}".gsub('"', '\"')
+    end
+    def self.stackoverflow_parse(doc)
+      @title = doc.css("a.question-hyperlink").text
+      @question = doc.css("div.question").text
+      @accepted_answer = doc.css("div.accepted-answer").text
+      @answers = doc.css("div.answer").text
+    end
+    def self.stackoverflow_match?(url)
+      if url.match(/.+stackoverflow.com\/question.+/i)
+	return :get_stackoverflow_text
+      end
+      false
+    end
+    def self.get_stackoverflow_text(doc)
+      stackoverflow_parse(doc)
+      "#{@title}\n\n#{@question}\n\nAccepted Answer: #{@accepted_answer}\n\n#{@answers}"
     end
   end
 end
