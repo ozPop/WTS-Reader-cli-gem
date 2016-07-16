@@ -34,7 +34,8 @@ module WTSReader
     end
     def self.get_stackoverflow_text(doc)
       stackoverflow_parse(doc)
-      "#{@title}\n\n#{@question}\n\nAccepted Answer: #{@accepted_answer}\n\n#{@answers}"
+      puts "#{@title}\n\n#{@question}\n\nAccepted Answer: #{@accepted_answer}\n\n#{@answers}"
+      "#{@title}\n\n#{@question}\n\nAccepted Answer: #{@accepted_answer}\n\n#{@answers}".gsub('"', '\"')
     end
   end
 end

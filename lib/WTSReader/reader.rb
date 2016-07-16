@@ -5,10 +5,8 @@ class WTSReader::Reader
   attr_accessor :rate, :voice, :path
   # default values are set for temporary files with default OSX voice at default rate (in word-per-minute)
   def initialize(url, rate=205, voice='Alex', path='/tmp/', ext='.aac')
-<<<<<<< HEAD
-=======
     @url = url
->>>>>>> profile_scraper
+
     @doc = Nokogiri::HTML(open(url))
     @rate = rate
     @voice = voice
@@ -26,13 +24,8 @@ class WTSReader::Reader
   def sanitize_document
     # Set's title before sanitizing in case title was removed in the filters
     set_title
-<<<<<<< HEAD
-    tag_noise = ['head', 'header', 'footer', 'script', 'style', 'img', 'video', 'audio', 'figure', 'figcaption', 'param', '.related']
-=======
     tag_noise = ['head', 'header', 'footer', 'script', 'style', 'img', 'video', 'audio', 'figure', 'figcaption', 'param', '.related','.header','.nav','nav', '#header', '#footer','.footer', 'user-details','.sidebar','#sidebar', '.favicon','#favicon','#hot-network-questions']
->>>>>>> profile_scraper
     # xpath_noise = ["//*[contains(.,'facebook')]", "//@*[contains(.,'twitter')]", "//@*[contains(.,'whatsapp')]", "//@*[contains(.,'pinterest')]"]
-    # xpath_noise.each {|x| @doc.search(x).remove()}
     tag_noise.each {|t| @doc.search(t).remove()}
   end
   def get_text
@@ -67,29 +60,21 @@ speeds[rate.to_sym]
     @path + @filename + @ext
   end
   def push_to_say
-<<<<<<< HEAD
-    sanitize_document
-    get_text
-    text = @text
-=======
     match = WTSReader::Profile.any_matches?(@url)
     if match
+      puts match
       text = WTSReader::Profile.send(match, @doc)
+      binding.pry
     else
       sanitize_document
       get_text
       text = @text
     end
->>>>>>> profile_scraper
     %x{ say -r #{@rate} -v #{@voice} -o #{get_file_location} \"#{text}\" }
     begin
-%x{ open #{get_file_location} }
+      %x{ open #{get_file_location} }
     rescue
-%x{ open #{@path + @filename + ".aiff"} }
+      %x{ open #{@path + @filename + ".aiff"} }
     end
   end
-<<<<<<< HEAD
 end
-=======
-end
->>>>>>> profile_scraper
