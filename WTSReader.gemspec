@@ -6,8 +6,8 @@ require 'WTSReader/version'
 Gem::Specification.new do |spec|
   spec.name          = "WTSReader"
   spec.version       = WTSReader::VERSION
-  spec.authors       = ["blaze.i.burgess@gmail.com"]
-  spec.email         = ["blaze.i.burgess@gmail.com"]
+  spec.authors       = ["osvaldas.popovas@flatironschool.com","blaze.i.burgess@gmail.com"]
+  spec.email         = ["osvaldas.popovas@flatironschool.com","blaze.i.burgess@gmail.com"]
 
   spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
   spec.description   = %q{TODO: Write a longer description or delete this line.}
