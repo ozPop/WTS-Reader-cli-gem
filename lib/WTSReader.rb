@@ -19,5 +19,15 @@ module WTSReader
     def text
       @doc.text
     end
+    # HTML PARSING
+    def sanitize_document
+      # Set's title before sanitizing in case title was removed in the filters
+      set_title
+      noise = ['head', 'header', 'footer', 'script', 'style', 'img', 'video', 'audio']
+      noise.each {|n| @doc.search(n).remove()}
+    end
+    def set_title
+      @title = @doc.title
+    end
   end
 end
