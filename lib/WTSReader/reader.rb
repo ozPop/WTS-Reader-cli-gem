@@ -60,8 +60,9 @@ speeds[rate.to_sym]
     @path + @filename + @ext
   end
   def push_to_say
-    if WTSReader::Profiles.guardian_match?(@url)
-      text = WTSReader::Profiles.get_guardian_text(@doc)
+    match = WTSReader::Profile.any_matches?(@url)
+    if match
+      text = WTSReader::Profile.send(match, @doc)
     else
       sanitize_document
       get_text

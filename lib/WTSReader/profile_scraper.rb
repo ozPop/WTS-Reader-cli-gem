@@ -1,8 +1,11 @@
 module WTSReader
-  class Profiles
+  class Profile
+    def self.any_matches?(url)
+      methods.grep(/match\?/).map { |m| send(m, url)}[0]
+    end
     def self.guardian_match?(url)
       if url.match(/.+theguardian.com.+/i) || url.match(/.+theguardian.co.uk.+/i)
-	return true
+	return :get_guardian_text
       end
       false
     end
