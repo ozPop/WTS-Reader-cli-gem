@@ -1,7 +1,7 @@
 module WTSReader
   class Profile
     def self.any_matches?(url)
-      methods.grep(/match\?/).map { |m| send(m, url)}[0]
+      methods.grep(/match\?/).map { |match_method| send(match_method, url)}.drop_while {|elem| elem != elem.to_s.to_sym}[0]
     end
     def self.guardian_match?(url)
       if url.match(/.+theguardian.com.+/i) || url.match(/.+theguardian.co.uk.+/i)
