@@ -4,6 +4,7 @@ require "open-uri"
 # modules
 require_relative "../lib/WTSReader/version"
 require_relative "../lib/concerns/voices"
+require_relative "../lib/concerns/helpers"
 
 # classes
 require_relative "../lib/WTSReader/reader"
