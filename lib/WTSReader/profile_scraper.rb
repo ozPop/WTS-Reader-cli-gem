@@ -38,5 +38,12 @@ module WTSReader
       stackoverflow_parse(doc) 
       "#{@title}\n\nQuestion:\n#{@question}\n\n#{@accepted_answer}\n\n#{@answers}".gsub('"', '\"')
     end
+    def self.get_guardian_headlines
+      doc = Nokogiri::HTML(open('https://www.theguardian.com/uk/technology'))
+      headlines = doc.xpath('//*[@class="fc-item__container"]/a').map {|x| [x.text, x.values].flatten}
+      # Returns an array of only headlines and urls. At time of writing (July 17), this works
+      # on all Guardian section pages
+      headlines.map {|h| [h[0], h[1]]}
+    end
   end
 end
