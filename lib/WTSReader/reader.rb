@@ -40,6 +40,14 @@ true
   # def set_speaker
   #   @reader = %x{ uname -v }.match(/root:xnu-\d+\.\d+/) ? "say" : "espeak"
   # end
+  def save_settings
+    %x{ mkdir #{ENV["HOME"]}/.wts-reader } rescue nil
+    File.open(ENV["HOME"] + "/.wts-reader/settings.txt", 'w') {|file| file.write("Voice:#{@voice}\nRate:#{@rate}\nPath:#{@path}\n")}
+  end
+  def load_settings
+    text = IO.readlines('settings.txt', 'r')[0]
+    @voice = text
+  end
   # sets the voice manually. this will have to be built out with the cli
   def set_voice(voice)
     # Hash of {:language => [voice1, voice2, ...], language2 => [...], ...} goes here
@@ -47,7 +55,7 @@ true
   end
   def set_speed(rate)
     # allows used to set words-per-minute manually
-    return rate if rate.is_a?(integer)
+    return @rate = rate if rate.is_a?(Integer)
     # otherwise gives user-friendly options
     speeds = {:slowest => 130, :slow => 170, :average => 205, :fast => 225, :fastest => 270}
     if speeds.include?(rate.to_sym)

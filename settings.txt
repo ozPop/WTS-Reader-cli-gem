@@ -1,0 +1,3 @@
+Voice:Alex
+Rate:205
+Path:/tmp/
