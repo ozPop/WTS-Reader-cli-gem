@@ -2,7 +2,7 @@ class WTSReader::Reader
   # every instance of Reader can only have one document
   attr_reader :doc
   # `say` settings can be changed dynamically
-  attr_accessor :rate, :voice, :path
+  attr_accessor :rate, :voice, :path, :filename
   # default values are set for temporary files with default OSX voice at default rate (in word-per-minute)
   def initialize(url, rate=205, voice='Alex', path='/tmp/', ext='.aac')
     @url = url
