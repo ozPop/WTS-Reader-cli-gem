@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/WTSReader.rb"
+
+WTSReader::Cli.new.call
