@@ -34,8 +34,26 @@ class WTSReader::Cli
   end
 
   def list_sources
-    # TODO: build this method to list available sources
-    puts "listing sources"
+    sources = WTSReader::Profile.get_guardian_headlines
+    # prints out numbered articles
+    sources.each do |key, value|
+      puts "#{key}. #{value[0]}"
+    end
+    # asks for input
+    input = choose_source(sources)
+    choice = sources[input][0]
+    puts "You have chosen: #{choice}"
+    sources[input][1]
+  end
+
+  # helper method to collect input of desired article
+  def choose_source(sources)
+    input = nil
+    until (1..sources.count).member?(input)
+      puts "Please enter a number of desired article"
+      input = gets.chomp.to_i
+    end
+    input
   end
 
   def setup
