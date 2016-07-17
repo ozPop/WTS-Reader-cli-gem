@@ -45,8 +45,15 @@ true
     File.open(ENV["HOME"] + "/.wts-reader/settings.txt", 'w') {|file| file.write("Voice:#{@voice}\nRate:#{@rate}\nPath:#{@path}\n")}
   end
   def load_settings
-    text = IO.readlines('settings.txt', 'r')[0]
-    @voice = text
+    begin
+      text = IO.readlines(ENV["HOME"] + "/.wts-reader/settings.txt", 'r')[0]
+      @voice = text.match(/Voice:(\w+)\n/).captures[0]
+      @rate = text.match(/Rate:(\w+)\n/).captures[0].to_i
+      @path = text.match(/Path:(.+)\n/).captures[0]
+    rescue
+      save_settings
+      "Settings file (#{ENV["HOME"]}/.wts-reader/settings.txt) does not exist or has become corrupted. Creating new file with default settings"
+    end
   end
   # sets the voice manually. this will have to be built out with the cli
   def set_voice(voice)
