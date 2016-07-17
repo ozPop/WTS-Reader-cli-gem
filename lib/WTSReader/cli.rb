@@ -66,11 +66,14 @@ class WTSReader::Cli
   end
 
   def cli_commands
-
+    puts ""
+    puts "Type 'languages' to see available languages"
+    puts "Type e.g.: 'english' to see available voice names for that language"
+    puts "Type 'tom' to make your choice"
   end
 
   def goodbye
-
+    puts "Shutting down"
   end
 
 end
