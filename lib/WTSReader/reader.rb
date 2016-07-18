@@ -12,15 +12,20 @@ class WTSReader::Reader
     @voice = voice
     @path = path
     @ext = ext
+    # filename is created using a random object id as name
     @filename = Random.new.to_s.split(':')[1][0..-2]
   end
+
+  # NOTE: text will likely get removed in future
   def text
     @doc.text
   end
+
   ## HTML PARSING
   def set_title
     @title = @doc.title
   end
+
   def sanitize_document
     # Set's title before sanitizing in case title was removed in the filters
     set_title
@@ -28,22 +33,22 @@ class WTSReader::Reader
     # xpath_noise = ["//*[contains(.,'facebook')]", "//@*[contains(.,'twitter')]", "//@*[contains(.,'whatsapp')]", "//@*[contains(.,'pinterest')]"]
     tag_noise.each {|t| @doc.search(t).remove()}
   end
+  # replaces newlines and escapes quotes in text
   def get_text
     @text = @title + @doc.text.gsub('\n', ' ').gsub('"', '\"')
     if @text
-true
+      true
     end
   end
+
   ## INTERFACE WITH SAY
-  # determines if the kernel is `xnu` (OSX) or not (implied GNU Linux/BSD)
-  # not used but possibly will be implemented for wider UNIX compatibility
-  # def set_speaker
-  #   @reader = %x{ uname -v }.match(/root:xnu-\d+\.\d+/) ? "say" : "espeak"
-  # end
+  # execute: creating dir and saving settings
   def save_settings
     %x{ mkdir #{ENV["HOME"]}/.wts-reader } rescue nil
     File.open(ENV["HOME"] + "/.wts-reader/settings.txt", 'w') {|file| file.write("Voice:#{@voice}\nRate:#{@rate}\nPath:#{@path}\n")}
   end
+
+  # loading of settings and handling load error
   def load_settings
     begin
       text = IO.readlines(ENV["HOME"] + "/.wts-reader/settings.txt", 'r')[0]
@@ -55,25 +60,30 @@ true
       "Settings file (#{ENV["HOME"]}/.wts-reader/settings.txt) does not exist or has become corrupted. Creating new file with default settings"
     end
   end
+
   # sets the voice manually. this will have to be built out with the cli
   def set_voice(voice)
     # Hash of {:language => [voice1, voice2, ...], language2 => [...], ...} goes here
     @voice = voice
   end
+
   def set_speed(rate)
-    # allows used to set words-per-minute manually
+    # allows user to set words-per-minute manually
     return @rate = rate if rate.is_a?(Integer)
     # otherwise gives user-friendly options
+    # NOTE: the below line will probably be moved to the CLI class
     speeds = {:slowest => 130, :slow => 170, :average => 205, :fast => 225, :fastest => 270}
     if speeds.include?(rate.to_sym)
-speeds[rate.to_sym]
+      speeds[rate.to_sym]
     else
-"Speed setting `#{rate}` not understood"
+      "Speed setting `#{rate}` not understood"
     end
   end
+
   def get_file_location
     @path + @filename + @ext
   end
+
   def push_to_say
     match = WTSReader::Profile.any_matches?(@url)
     if match 
