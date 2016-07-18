@@ -9,7 +9,7 @@ class WTSReader::Profile
 
   def self.guardian_match?(url)
     if url.match(/.+theguardian.com.+/i) || url.match(/.+theguardian.co.uk.+/i)
-return :get_guardian_text
+      return :get_guardian_text
     end
     false
   end
@@ -44,7 +44,7 @@ return :get_guardian_text
   end
   def self.stackoverflow_match?(url)
     if url.match(/.+stackoverflow.com\/question.+/i)
-return :get_stackoverflow_text
+      return :get_stackoverflow_text
     end
     false
   end
