@@ -20,8 +20,9 @@ class WTSReader::Cli
       start
     when input == "2"
       # show user list of available read sources and returns URL choice
-      list_sources
+      url = list_sources
       # ask user about settings
+      start
     end
   end
 
@@ -69,18 +70,22 @@ class WTSReader::Cli
     until legal_commands.include?(input) == true
       puts ""
       puts "Choose from options below or input a command"
-      puts "1. Use default settings"
-      puts "2. List commands"
+      puts "--------------------------------------------"
+      puts "1. Use default WTSReader settings"
+      puts "2. List available commands"
       puts "Type 1 or 2, otherwise just enter a command or type 'quit'"
       input = gets.chomp
     end
     case
     when input == "quit"
       return goodbye
-    # set defaults
+    # set defaults, collect URL and start Reader
     when input == "1"
       puts ""
-      puts "Language is English, Voice Name is Alex, Rate is 205"
+      puts "Defaults: Language is English, voice name is Alex, rate is 205"
+      puts "Please enter URL:"
+      url = gets.chomp
+      WTSReader::Reader.new(url).push_to_say
     # show commands and continue setup
     when input == "2"
       cli_commands
