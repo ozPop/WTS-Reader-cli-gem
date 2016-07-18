@@ -1,5 +1,6 @@
 class WTSReader::Cli
   include Voices
+  include Helpers::InstanceMethods
 
   def call
     # start the reader
@@ -57,22 +58,10 @@ class WTSReader::Cli
     input
   end
 
-  def hash_to_array(hash, array)
-    hash.each do |key, value|
-      if value.class == Hash
-        array << key.to_s
-        hash_to_array(value, array)
-      else
-        array << key.to_s
-        array << value
-      end
-    end
-    array.flatten
-  end
-
   def setup
     # TODO: Also allow to choose read speed
-    legal_commands = ["1", "2", "languages", "quit"] + hash_to_array(VOICES, arr = Array.new)
+    languages_and_voices = hash_to_array(VOICES, arr = Array.new)
+    legal_commands = ["1", "2", "languages", "quit"] + languages_and_voices
     input = nil
     until legal_commands.include?(input) == true
       puts ""
