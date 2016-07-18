@@ -57,8 +57,16 @@ class WTSReader::Cli
     input
   end
 
-  def start
-    
+  # start reader instance with defaults or custom settings
+  def start(type)
+    # if type.class == String
+      # then its default start
+      # start_reader(type)
+    # else it must be custom type
+      # custom type will be handled differently
+      # settings must be supplied into start_reader
+      # start_reader(type, settings)
+    #end
   end
 
   def setup(url = nil)
@@ -71,26 +79,39 @@ class WTSReader::Cli
       puts "Choose from options below or input a command"
       puts "----------------------------------------------------------"
       puts "1. Use default WTSReader settings"
-      puts "2. List available commands"
+      puts "2. Enter custom WTSReader settings"
+      puts "3. List available commands"
       puts "Type 1 or 2, otherwise just enter a command or type 'quit'"
       input = gets.chomp
     end
     case
     when input == "quit"
       return goodbye
-    # set defaults, collect URL and start Reader
+    # display defaults, collect URL and starts Reader with defaults
     when input == "1"
-      puts ""
-      puts "Defaults: Language is English, voice name is Alex, rate is 205"
-      puts "Please enter URL:"
-      url = gets.chomp
-    # show commands and continue setup
+      start(default_start)
     when input == "2"
+      start(custom_start)
+    # show commands
+    when input == "3"
       cli_commands
       setup
+    # display language choices
     when input == "languages"
       display_languages
     end
+  end
+
+  def default_start
+    puts ""
+    puts "Defaults: Language is English, voice name is Alex, rate is 205"
+    puts "Please enter URL:"
+    url = gets.chomp
+  end
+
+  # collects desired custom settings
+  def cutsom_start
+
   end
 
   # collect keys from VOICES, format for display and output
