@@ -4,20 +4,22 @@ class WTSReader::Cli
 
   def call
     # start the reader
-    puts ">>>>>>>>>>>>>>>><<<<<<<<<<<<<<<"
-    puts "Welcome to Web To Speech Reader"
-    puts ">>>>>>>>>>>>>>>><<<<<<<<<<<<<<<"
+    puts "   >>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<   "
+    puts " >>> Welcome to Web To Speech Reader <<<"
+    puts "   >>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<   "
     input = nil
-    until input == "1" || input == "2"
+    until input == "1" || input == "2" || input == "quit"
       first_steps
       input = gets.chomp
     end
     case
+    when input == "quit"
+      goodbye
     when input == "1"
       # start the main application
       start
     when input == "2"
-      # show user list of available read sources and return URL of source
+      # show user list of available read sources and returns URL choice
       list_sources
       # ask user about settings
     end
@@ -32,7 +34,7 @@ class WTSReader::Cli
     puts "What do you want to do?"
     puts "  1. Enter my own URL"
     puts "  2. See available sources"
-    puts "Please enter 1 or 2"
+    puts "Please enter 1 or 2 otherwise type 'quit'"
   end
 
   def list_sources
@@ -52,6 +54,7 @@ class WTSReader::Cli
   def choose_source(sources)
     input = nil
     until (1..sources.count).member?(input)
+      puts ""
       puts "Please enter a number of desired article"
       input = gets.chomp.to_i
     end
@@ -93,7 +96,8 @@ class WTSReader::Cli
   end
 
   def goodbye
-    puts "Shutting down"
+    puts ""
+    puts "Shutting down..."
   end
 
 end
