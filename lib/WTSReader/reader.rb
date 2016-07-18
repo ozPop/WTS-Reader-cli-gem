@@ -41,7 +41,7 @@ true
   #   @reader = %x{ uname -v }.match(/root:xnu-\d+\.\d+/) ? "say" : "espeak"
   # end
   def save_settings
-    %x{ mkdir #{ENV["HOME"]}/.wts-reader } rescue nil
+    %x{ mkdir #{ENV["HOME"]}/.wts-reader } unless File.directory?("#{ENV["HOME"]}/.wts-reader")
     File.open(ENV["HOME"] + "/.wts-reader/settings.txt", 'w') {|file| file.write("Voice:#{@voice}\nRate:#{@rate}\nPath:#{@path}\n")}
   end
   def load_settings
