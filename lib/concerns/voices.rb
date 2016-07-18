@@ -1,26 +1,22 @@
 module Voices
   VOICES = {
     :english => {
-      :united_states => {
-        :female => [
-          "agnes",
-          "allison",
-          "ava",
-          "kathy",
-          "princess",
-          "samantha",
-          "susan",
-          "vicki",
-          "victoria"],
-        :male => [
-          "alex",
-          "bruce",
-          "fred",
-          "junior",
-          "ralph",
-          "tom"
-        ]
-      },
+      :united_states => 
+      [ "agnes",
+        "alex",
+        "allison",
+        "ava",
+        "bruce",
+        "fred",
+        "junior",
+        "kathy",
+        "princess",
+        "ralph",
+        "samantha",
+        "susan",
+        "tom",
+        "vicki",
+        "victoria"],
       :australia => ["karen", "lee"],
       :india => ["veena"],
       :ireland => ["moira"],
@@ -51,10 +47,7 @@ module Voices
     :hindi => ["lekha"],
     :hungarian => ["mariska"],
     :indonesian => ["damayanti"],
-    :italian => {
-      :female => ["alice", "federica", "paola"],
-      :male => ["luca"]
-    },
+    :italian => ["alice", "federica", "luca", "paola"],
     :japanese => ["kyoko", "otoya"],
     :korean => ["yuna"],
     :norwegian => ["henrik", "nora"],
