@@ -16,8 +16,9 @@ class WTSReader::Cli
       # start the main application
       start
     when input == "2"
-      # show user list of available read sources
+      # show user list of available read sources and return URL of source
       list_sources
+      # ask user about settings
     end
   end
 
@@ -56,10 +57,22 @@ class WTSReader::Cli
     input
   end
 
+  def hash_to_array(hash, array)
+    hash.each do |key, value|
+      if value.class == Hash
+        array << key.to_s
+        hash_to_array(value, array)
+      else
+        array << key.to_s
+        array << value
+      end
+    end
+    array.flatten
+  end
+
   def setup
-    # TODO: legal commands will be expanded to include all language names and voice names
     # TODO: Also allow to choose read speed
-    legal_commands = ["1", "2", "languages", "quit"]
+    legal_commands = ["1", "2", "languages", "quit"] + hash_to_array(VOICES, arr = Array.new)
     input = nil
     until legal_commands.include?(input) == true
       puts ""
