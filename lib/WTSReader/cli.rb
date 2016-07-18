@@ -69,7 +69,7 @@ class WTSReader::Cli
     until legal_commands.include?(input) == true
       puts ""
       puts "Choose from options below or input a command"
-      puts "--------------------------------------------"
+      puts "----------------------------------------------------------"
       puts "1. Use default WTSReader settings"
       puts "2. List available commands"
       puts "Type 1 or 2, otherwise just enter a command or type 'quit'"
@@ -88,7 +88,25 @@ class WTSReader::Cli
     when input == "2"
       cli_commands
       setup
+    when input == "languages"
+      display_languages
     end
+  end
+
+  # collect keys from VOICES, format for display and output
+  def display_languages
+    languages = VOICES.keys
+    output = ""
+    languages.each_with_index do |language, index|
+      # spaces to add inbetween = column.length - word.length
+      output += "#{language.to_s + (" " * (12 - language.to_s.chars.count))}"
+      if index % 4 == 0
+        output += "\n"
+      end
+    end
+    puts ""
+    puts output
+    setup
   end
 
   def start_reader(url, settings = nil)
@@ -100,10 +118,11 @@ class WTSReader::Cli
   end
 
   def cli_commands
-    puts ""
+    puts "Available commands:"
+    puts "----------------------------------------------------------"
     puts "Type 'languages' to see available languages"
-    puts "Type e.g.: 'english' to see available voice names for that language"
-    puts "Type 'tom' to make your choice"
+    puts "Type e.g.: 'english' to see available names for that language"
+    puts "Typing name auto selects language (e.g.: 'tom' selects english)"
   end
 
   def goodbye
