@@ -72,7 +72,7 @@ class WTSReader::Cli
   def setup(url = nil)
     # TODO: Also allow to choose read speed
     languages_and_voices = hash_to_array(VOICES, arr = Array.new)
-    legal_commands = ["1", "2", "languages", "quit"] + languages_and_voices
+    legal_commands = ["1", "2", "3", "languages", "quit"] + languages_and_voices
     input = nil
     until legal_commands.include?(input) == true
       puts ""
@@ -81,7 +81,7 @@ class WTSReader::Cli
       puts "1. Use default WTSReader settings"
       puts "2. Enter custom WTSReader settings"
       puts "3. List available commands"
-      puts "Type 1 or 2, otherwise just enter a command or type 'quit'"
+      puts "Type 1, 2, or 3 otherwise just enter a command or type 'quit'"
       input = gets.chomp
     end
     case
@@ -98,7 +98,7 @@ class WTSReader::Cli
       setup
     # display language choices
     when input == "languages"
-      display_languages
+      display_columns(languages)
     end
   end
 
@@ -114,13 +114,19 @@ class WTSReader::Cli
 
   end
 
-  # collect keys from VOICES, format for display and output
-  def display_languages
-    languages = VOICES.keys
+  # collect keys from VOICES
+  def languages
+    array = []
+    VOICES.each_key {|key| array << key.to_s}
+    array
+  end
+
+  # output columns
+  def display_columns(input)
     output = ""
-    languages.each_with_index do |language, index|
+    input.each_with_index do |element, index|
       # spaces to add inbetween = column.length - word.length
-      output += "#{language.to_s + (" " * (12 - language.to_s.chars.count))}"
+      output += "#{element + (" " * (15 - element.to_s.chars.count))}"
       if index % 4 == 0
         output += "\n"
       end
