@@ -16,18 +16,13 @@ class WTSReader::Cli
     when input == "quit"
       goodbye
     when input == "1"
-      # start the main application
-      start
+      # start the setup
+      setup
     when input == "2"
-      # show user list of available read sources and returns URL choice
+      # show user list of available read sources and collects URL choice
       url = list_sources
-      # ask user about settings
-      start
+      setup(url)
     end
-  end
-
-  def start
-    setup
   end
 
   def first_steps
@@ -62,7 +57,11 @@ class WTSReader::Cli
     input
   end
 
-  def setup
+  def start
+    
+  end
+
+  def setup(url = nil)
     # TODO: Also allow to choose read speed
     languages_and_voices = hash_to_array(VOICES, arr = Array.new)
     legal_commands = ["1", "2", "languages", "quit"] + languages_and_voices
@@ -85,11 +84,18 @@ class WTSReader::Cli
       puts "Defaults: Language is English, voice name is Alex, rate is 205"
       puts "Please enter URL:"
       url = gets.chomp
-      WTSReader::Reader.new(url).push_to_say
     # show commands and continue setup
     when input == "2"
       cli_commands
       setup
+    end
+  end
+
+  def start_reader(url, settings = nil)
+    if settings == nil
+      WTSReader::Reader.new(url).push_to_say
+    else
+      # initialize Reader with custom settings
     end
   end
 
