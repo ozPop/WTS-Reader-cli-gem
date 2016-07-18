@@ -1,5 +1,5 @@
 class WTSReader::Profile
-  extend Helpers
+  # extend Helpers
 
   def self.any_matches?(url)
     methods.grep(/match\?/).map { |match_method| send(match_method, url)}.drop_while {|elem| elem != elem.to_s.to_sym}[0]
@@ -29,7 +29,7 @@ class WTSReader::Profile
     headlines = doc.xpath('//*[@class="fc-item__container"]/a').map {|x| [x.text, x.values].flatten}
     # Returns an array of only headlines and urls. At time of writing (July 17), this works
     # on all Guardian section pages
-    Helpers.process_headlines(headlines)
+    Helpers::ClassMethods.process_headlines(headlines)
   end
 
   # stackoverflow
