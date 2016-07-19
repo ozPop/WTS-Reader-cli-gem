@@ -111,6 +111,24 @@ class Cli
     end
   end
 
+  def display_rates
+    puts ""
+    recommended_rates = {
+      "0.5x" => 80,
+      "1x" => 160,
+      "1.5x" => 240,
+      "2x" => 320
+    }
+    output = ""
+    recommended_rates.each do |rate, value|
+      output += "#{rate} "
+      output += "speed is #{value}/wpm"
+      output += "(default)" if value == 160
+      output += "\n"
+    end
+    puts output
+  end
+
   def default_start
     puts ""
     puts "Defaults: Language is English, voice name is Alex, rate is 205"
@@ -172,7 +190,7 @@ class Cli
     puts "Available commands:"
     puts "----------------------------------------------------------"
     puts "Type 'languages' to view available languages"
-    puts "Type e.g.: 'english' to view available voice names"
+    puts "Type 'english' to view available voice names"
     puts "Type 'rates' to view playback speed presets"
   end
 

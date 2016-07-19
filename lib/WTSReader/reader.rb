@@ -4,7 +4,7 @@ class Reader
   # `say` settings can be changed dynamically
   attr_accessor :rate, :voice, :path, :filename
   # default values are set for temporary files with default OSX voice at default rate (in word-per-minute)
-  def initialize(url, rate=205, voice='Alex', path='/tmp/', ext='.aac')
+  def initialize(url, rate=160, voice='Alex', path='/tmp/', ext='.aac')
     @url = url
 
     @doc = Nokogiri::HTML(open(url))
@@ -70,14 +70,6 @@ class Reader
   def set_speed(rate)
     # allows user to set words-per-minute manually
     return @rate = rate if rate.is_a?(Integer)
-    # otherwise gives user-friendly options
-    # NOTE: the below line will probably be moved to the CLI class
-    speeds = {:slowest => 130, :slow => 170, :average => 205, :fast => 225, :fastest => 270}
-    if speeds.include?(rate.to_sym)
-      speeds[rate.to_sym]
-    else
-      "Speed setting `#{rate}` not understood"
-    end
   end
 
   def get_file_location
