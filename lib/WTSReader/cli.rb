@@ -86,18 +86,22 @@ class Cli
     when input == "3"
       cli_commands
       setup
-    # display language choices
+    # display all languages
     when input == "languages"
       display_columns(languages)
       setup
+    # display language details: varieties and voice names
     when languages.include?(input)
-      language_details(input)
+      display_language_details(input)
       setup
     when input == "rates"
       display_suggested_rates
       setup
-    # display names associated with a particular language
     end
+  end
+
+  def display_helper(command)
+
   end
 
   # APP START
@@ -197,14 +201,13 @@ class Cli
 
   # LANGUAGES
 
-  # collect keys from VOICES
   def languages
     array = []
     VOICES.each_key {|key| array << key.to_s}
     array
   end
 
-  def language_details(language)
+  def display_language_details(language)
     puts ""
     puts "#{language.capitalize}"
     puts "----------------------------------------------------------"
