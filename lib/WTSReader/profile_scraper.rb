@@ -32,6 +32,23 @@ class WTSReader::Profile
     Helpers::ClassMethods.process_headlines(headlines)
   end
 
+  # learn
+
+  def self.learn_match?(url)
+    if url.match(/.+learn.co.+/i) || url.match(/.+learn.co.+/i)
+      return :get_learn_text
+    end
+    false
+  end
+  def self.learn_parse(doc)
+    @headline = doc.css("h2 strong").text
+    @content = doc.css("div.text-block").text
+  end
+  def self.get_learn_text(doc)
+    learn_parse(doc)
+    "#{@headline}\n\n#{@content}".gsub('"', '\"').gsub("\n", "\n\n")
+  end
+
   # stackoverflow
 
   def self.stackoverflow_parse(doc)
