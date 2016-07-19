@@ -16,8 +16,10 @@ class Cli
     when input == "quit"
       goodbye
     when input == "1"
-      # start the setup
-      setup
+      puts ""
+      puts "Please enter a web address"
+      url = gets.chomp
+      setup(url)
     when input == "2"
       # show user list of available read sources and collects URL choice
       url = list_sources
@@ -57,8 +59,7 @@ class Cli
     input
   end
 
-  def setup(url = nil)
-    # TODO: Also allow to choose read speed
+  def setup(url)
     languages_and_voices = hash_to_array(VOICES, arr = Array.new)
     legal_commands = ["1", "2", "3", "languages", "rates", "quit"] +
       languages_and_voices
@@ -78,16 +79,18 @@ class Cli
       return goodbye
     # displays defaults, collects URL and starts Reader with defaults
     when input == "1"
-      start(default_start)
+      puts ""
+      puts "Defaults: Language is English, voice name is Alex, rate is 160"
+      start(url)
     # custom start collects rate and voice choice
     when input == "2"
-      settings = custom_start
+      start(url, custom_start)
     when input == "3"
       cli_commands
-      setup
+      setup(url)
     when input == "languages" || languages.include?(input) || input == "rates"
       display_helper(input)
-      setup
+      setup(url)
     end
   end
 
@@ -106,15 +109,13 @@ class Cli
   # APP START
 
   # start reader instance with defaults or custom settings
-  def start(type)
-    # if type.class == String
-      # then its default start
-      # start_reader(type)
-    # else it must be custom type
-      # custom type will be handled differently
-      # settings must be supplied into start_reader
-      # start_reader(type, settings)
-    #end
+  def start(url, start_type = nil)
+    # default_start returns url string
+    if start_type == nil
+      start_reader(url)
+    elsif start_type.class == Hash
+      start_reader(url, start_type)
+    end
   end
 
   def start_reader(url, settings = nil)
@@ -122,20 +123,16 @@ class Cli
       Reader.new(url).push_to_say
     else
       # initialize Reader with custom settings
+      Reader.new(url, settings[:rate], settings[:voice]).push_to_say
     end
-  end
-
-  def default_start
-    puts ""
-    puts "Defaults: Language is English, voice name is Alex, rate is 160"
-    puts "Please enter URL:"
-    url = gets.chomp
   end
 
   # collects custom settings: voice, rate
   def custom_start
-    rate = collect_rate_setting
-    voice = collect_voice_setting
+    settings = {}
+    settings[:rate] = collect_rate_setting
+    settings[:voice] = collect_voice_setting
+    settings
   end
 
   # RATES
