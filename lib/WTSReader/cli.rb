@@ -82,7 +82,7 @@ class WTSReader::Cli
       puts "2. Enter custom WTSReader settings"
       puts "3. List available commands"
       puts "Type 1, 2, or 3 otherwise just enter a command or type 'quit'"
-      input = gets.chomp
+      input = gets.chomp.downcase
     end
     case
     when input == "quit"
@@ -99,6 +99,11 @@ class WTSReader::Cli
     # display language choices
     when input == "languages"
       display_columns(languages)
+      setup
+    # display names associated with a particular language
+    when languages.include?(input)
+      language_details(input)
+      setup
     end
   end
 
@@ -121,19 +126,33 @@ class WTSReader::Cli
     array
   end
 
+  def language_details(language)
+    puts ""
+    puts "#{language.capitalize}"
+    puts "----------------------------------------------------------"
+    if VOICES[language.to_sym].class == Hash
+      VOICES[language.to_sym].each do |country, voices|
+        puts "#{country.to_s.capitalize}:"
+        display_columns(voices)
+        puts ""
+      end
+    else
+      display_columns(VOICES[language.to_sym])
+    end
+  end
+
   # output columns
   def display_columns(input)
     output = ""
     input.each_with_index do |element, index|
       # spaces to add inbetween = column.length - word.length
-      output += "#{element + (" " * (15 - element.to_s.chars.count))}"
-      if index % 4 == 0
+      output += "#{element.capitalize + (" " * (15 - element.to_s.chars.count))}"
+      if index % 4 == 0 && index != 0
         output += "\n"
       end
     end
     puts ""
     puts output
-    setup
   end
 
   def start_reader(url, settings = nil)
