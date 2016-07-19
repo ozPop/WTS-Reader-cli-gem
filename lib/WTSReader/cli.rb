@@ -88,11 +88,12 @@ class Cli
     case
     when input == "quit"
       return goodbye
-    # display defaults, collect URL and starts Reader with defaults
+    # displays defaults, collects URL and starts Reader with defaults
     when input == "1"
       start(default_start)
+    # custom start collects rate and voice choice
     when input == "2"
-      start(custom_start)
+      settings = custom_start
     # show commands
     when input == "3"
       cli_commands
@@ -102,7 +103,7 @@ class Cli
       display_columns(languages)
       setup
     when input == "rates"
-      display_rates
+      display_suggested_rates
       setup
     # display names associated with a particular language
     when languages.include?(input)
@@ -111,16 +112,19 @@ class Cli
     end
   end
 
-  def display_rates
-    puts ""
-    recommended_rates = {
+  def suggested_rates
+    rates = {
       "0.5x" => 80,
       "1x" => 160,
       "1.5x" => 240,
       "2x" => 320
     }
+  end
+
+  def display_suggested_rates
+    puts ""
     output = ""
-    recommended_rates.each do |rate, value|
+    suggested_rates.each do |rate, value|
       output += "#{rate} "
       output += "speed is #{value}/wpm"
       output += "(default)" if value == 160
@@ -129,16 +133,29 @@ class Cli
     puts output
   end
 
+  def collect_rate_setting
+    legal_rate_range = 50..400
+    display_suggested_rates
+    puts ""
+    puts "Please enter suggested or custom rate (50-400)"
+    input = nil
+    until legal_rate_range.member?(input)
+      input = gets.chomp.to_i
+      puts "check input" if legal_rate_range.member?(input) == false
+    end
+    input
+  end
+
   def default_start
     puts ""
-    puts "Defaults: Language is English, voice name is Alex, rate is 205"
+    puts "Defaults: Language is English, voice name is Alex, rate is 160"
     puts "Please enter URL:"
     url = gets.chomp
   end
 
-  # collects desired custom settings
-  def cutsom_start
-
+  # collects custom settings: voice, rate
+  def custom_start
+    rate = collect_rate_setting
   end
 
   # collect keys from VOICES
