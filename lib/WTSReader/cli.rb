@@ -82,26 +82,25 @@ class Cli
     # custom start collects rate and voice choice
     when input == "2"
       settings = custom_start
-    # show commands
     when input == "3"
       cli_commands
       setup
-    # display all languages
-    when input == "languages"
-      display_columns(languages)
-      setup
-    # display language details: varieties and voice names
-    when languages.include?(input)
-      display_language_details(input)
-      setup
-    when input == "rates"
-      display_suggested_rates
+    when input == "languages" || languages.include?(input) || input == "rates"
+      display_helper(input)
       setup
     end
   end
 
-  def display_helper(command)
-
+  def display_helper(input)
+    case
+    when input == "languages"
+      display_columns(languages)
+    when languages.include?(input)
+      # country varieties (if any) and voice names
+      display_language_details(input)
+    when input == "rates"
+      display_suggested_rates
+    end
   end
 
   # APP START
@@ -189,14 +188,19 @@ class Cli
     all_voices.flatten
   end
   
-  # THIS METHOD IS NOT DONE. Stopping to commit
   def collect_voice_setting
-    # input = nil
-    # until voices.include?(input)
-    #   puts "Please enter voice name or 'help' to see commands"
-    #   input = gets.chomp.downcase
-    # end
-    # input
+    input = nil
+    until voices.include?(input)
+      if input == "help"
+        cli_commands
+      elsif input == "languages" || languages.include?(input) || input == "rates"
+        display_helper(input)
+      end
+      puts ""
+      puts "Please enter voice name or 'help' to see commands"
+      input = gets.chomp.downcase
+    end
+    input
   end
 
   # LANGUAGES
@@ -222,7 +226,7 @@ class Cli
     end
   end
 
-  # output columns
+  # expects an array, outputs elements in columns
   def display_columns(input)
     output = ""
     input.each_with_index do |element, index|
