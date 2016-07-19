@@ -1,4 +1,4 @@
-class WTSReader::Reader
+class Reader
   # every instance of Reader can only have one document
   attr_reader :doc
   # `say` settings can be changed dynamically
@@ -85,9 +85,9 @@ class WTSReader::Reader
   end
 
   def push_to_say
-    match = WTSReader::Profile.any_matches?(@url)
+    match = Profile.any_matches?(@url)
     if match 
-      text = WTSReader::Profile.send(match, @doc) 
+      text = Profile.send(match, @doc) 
     else
       sanitize_document
       get_text

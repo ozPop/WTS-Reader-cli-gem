@@ -1,4 +1,4 @@
+require_relative "../config/environment"
+
 module WTSReader
 end
-
-require_relative "../config/environment"

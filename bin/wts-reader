@@ -2,4 +2,4 @@
 require "pry"
 require_relative "../lib/WTSReader.rb"
 
-WTSReader::Cli.new.call
+Cli.new.call

@@ -1,4 +1,4 @@
-class WTSReader::Cli
+class Cli
   include Voices
   include Helpers::InstanceMethods
 
@@ -34,7 +34,7 @@ class WTSReader::Cli
   end
 
   def list_sources
-    sources = WTSReader::Profile.get_guardian_headlines
+    sources = Profile.get_guardian_headlines
     # prints out numbered articles
     sources.each do |key, value|
       puts "#{key}. #{value[0]}"
@@ -161,7 +161,7 @@ class WTSReader::Cli
 
   def start_reader(url, settings = nil)
     if settings == nil
-      WTSReader::Reader.new(url).push_to_say
+      Reader.new(url).push_to_say
     else
       # initialize Reader with custom settings
     end
