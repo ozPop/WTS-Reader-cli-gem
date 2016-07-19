@@ -72,7 +72,8 @@ class WTSReader::Cli
   def setup(url = nil)
     # TODO: Also allow to choose read speed
     languages_and_voices = hash_to_array(VOICES, arr = Array.new)
-    legal_commands = ["1", "2", "3", "languages", "quit"] + languages_and_voices
+    legal_commands = ["1", "2", "3", "languages", "rates", "quit"] +
+      languages_and_voices
     input = nil
     until legal_commands.include?(input) == true
       puts ""
@@ -99,6 +100,9 @@ class WTSReader::Cli
     # display language choices
     when input == "languages"
       display_columns(languages)
+      setup
+    when input == "rates"
+      display_rates
       setup
     # display names associated with a particular language
     when languages.include?(input)
@@ -164,11 +168,12 @@ class WTSReader::Cli
   end
 
   def cli_commands
+    puts ""
     puts "Available commands:"
     puts "----------------------------------------------------------"
-    puts "Type 'languages' to see available languages"
-    puts "Type e.g.: 'english' to see available names for that language"
-    puts "Typing name auto selects language (e.g.: 'tom' selects english)"
+    puts "Type 'languages' to view available languages"
+    puts "Type e.g.: 'english' to view available voice names"
+    puts "Type 'rates' to view playback speed presets"
   end
 
   def goodbye
