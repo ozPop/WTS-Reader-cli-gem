@@ -57,18 +57,6 @@ class Cli
     input
   end
 
-  # start reader instance with defaults or custom settings
-  def start(type)
-    # if type.class == String
-      # then its default start
-      # start_reader(type)
-    # else it must be custom type
-      # custom type will be handled differently
-      # settings must be supplied into start_reader
-      # start_reader(type, settings)
-    #end
-  end
-
   def setup(url = nil)
     # TODO: Also allow to choose read speed
     languages_and_voices = hash_to_array(VOICES, arr = Array.new)
@@ -102,15 +90,52 @@ class Cli
     when input == "languages"
       display_columns(languages)
       setup
+    when languages.include?(input)
+      language_details(input)
+      setup
     when input == "rates"
       display_suggested_rates
       setup
     # display names associated with a particular language
-    when languages.include?(input)
-      language_details(input)
-      setup
     end
   end
+
+  # APP START
+
+  # start reader instance with defaults or custom settings
+  def start(type)
+    # if type.class == String
+      # then its default start
+      # start_reader(type)
+    # else it must be custom type
+      # custom type will be handled differently
+      # settings must be supplied into start_reader
+      # start_reader(type, settings)
+    #end
+  end
+
+  def start_reader(url, settings = nil)
+    if settings == nil
+      Reader.new(url).push_to_say
+    else
+      # initialize Reader with custom settings
+    end
+  end
+
+  def default_start
+    puts ""
+    puts "Defaults: Language is English, voice name is Alex, rate is 160"
+    puts "Please enter URL:"
+    url = gets.chomp
+  end
+
+  # collects custom settings: voice, rate
+  def custom_start
+    rate = collect_rate_setting
+    voice = collect_voice_setting
+  end
+
+  # RATES
 
   def suggested_rates
     rates = {
@@ -146,17 +171,31 @@ class Cli
     input
   end
 
-  def default_start
-    puts ""
-    puts "Defaults: Language is English, voice name is Alex, rate is 160"
-    puts "Please enter URL:"
-    url = gets.chomp
+  # VOICE
+
+  def voices
+    all_voices = []
+    VOICES.each_value do |value|
+      if value.class == Hash
+        all_voices << value.flatten(2).delete_if {|el| el.class == Symbol}
+      else
+        all_voices << value
+      end
+    end
+    all_voices.flatten
+  end
+  
+  # THIS METHOD IS NOT DONE. Stopping to commit
+  def collect_voice_setting
+    # input = nil
+    # until voices.include?(input)
+    #   puts "Please enter voice name or 'help' to see commands"
+    #   input = gets.chomp.downcase
+    # end
+    # input
   end
 
-  # collects custom settings: voice, rate
-  def custom_start
-    rate = collect_rate_setting
-  end
+  # LANGUAGES
 
   # collect keys from VOICES
   def languages
@@ -192,14 +231,6 @@ class Cli
     end
     puts ""
     puts output
-  end
-
-  def start_reader(url, settings = nil)
-    if settings == nil
-      Reader.new(url).push_to_say
-    else
-      # initialize Reader with custom settings
-    end
   end
 
   def cli_commands
