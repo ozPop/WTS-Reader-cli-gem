@@ -79,8 +79,9 @@ class Cli
       return goodbye
     # displays defaults, collects URL and starts Reader with defaults
     when input == "1"
+      settings = load_settings
       puts ""
-      puts "Defaults: Language is English, voice name is Alex, rate is 160"
+      puts "Defaults: Language is English, voice name is #{settings[:voice].capitalize}, rate is #{settings[:rate]}"
       start(url)
     # custom start collects rate and voice choice
     when input == "2"
@@ -120,10 +121,18 @@ class Cli
 
   def start_reader(url, settings = nil)
     if settings == nil
-      Reader.new(url).push_to_say
+      settings = load_settings
+      Reader.new(url, settings[:rate], settings[:voice]).push_to_say
     else
       # initialize Reader with custom settings
       Reader.new(url, settings[:rate], settings[:voice]).push_to_say
+      puts ""
+      puts "Would you like to save these settings? (y)es or (n)o"
+      input = gets.chomp.downcase
+      if input == "y" || input == "yes"
+        save_settings(settings)
+        puts "Settings saved to ~/.wts-reader/"
+      end
     end
   end
 
@@ -134,6 +143,30 @@ class Cli
     settings[:voice] = collect_voice_setting
     settings
   end
+
+  def save_settings(settings)
+    %x{ mkdir #{ENV["HOME"]}/.wts-reader } unless File.directory?("#{ENV["HOME"]}/.wts-reader")
+    File.open(ENV["HOME"] + "/.wts-reader/settings.txt", 'w') {|file| file.write("Voice:#{settings[:voice]}\nRate:#{settings[:rate]}\nPath:#{settings[:path] || '/tmp/'}\n")}
+  end
+
+  # loading of settings and handling load error
+  def load_settings
+    settings = {}
+    begin
+      text = IO.readlines(ENV["HOME"] + "/.wts-reader/settings.txt", 'r')[0]
+      settings[:voice] = text.match(/Voice:(\w+)\n/).captures[0]
+      settings[:rate] = text.match(/Rate:(\w+)\n/).captures[0].to_i
+      settings[:path] = text.match(/Path:(.+)\n/).captures[0]
+      settings
+    rescue
+      settings = {:voice => "Alex", :rate => 160, :path => '/tmp/'}
+      save_settings(settings)
+      puts "Settings file (#{ENV["HOME"]}/.wts-reader/settings.txt) does not exist or has become corrupted. Creating new file with default settings"
+      settings
+    end
+  end
+
+
 
   # RATES
 
