@@ -146,7 +146,9 @@ class Cli
 
   def save_settings(settings)
     %x{ mkdir #{ENV["HOME"]}/.wts-reader } unless File.directory?("#{ENV["HOME"]}/.wts-reader")
-    File.open(ENV["HOME"] + "/.wts-reader/settings.txt", 'w') {|file| file.write("Voice:#{settings[:voice]}\nRate:#{settings[:rate]}\nPath:#{settings[:path] || '/tmp/'}\n")}
+    File.open(ENV["HOME"] + "/.wts-reader/settings.txt", 'w') do |file| 
+      file.write("Voice:#{settings[:voice]}\nRate:#{settings[:rate]}\nPath:#{settings[:path] || '/tmp/'}\n")
+    end
   end
 
   # loading of settings and handling load error
