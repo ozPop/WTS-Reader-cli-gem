@@ -21,16 +21,16 @@ web page using built in text-to-speech software on your Mac.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'WTSReader'
+gem 'WTSReader', :git => 'git://github.com/ozPop/WTS-Reader-cli-gem.git'
 ```
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
+Or install it yourself by downloading the .gem file, navigating to the download directory,  and running:
 
-    $ gem install WTSReader
+    $ gem install ./WTSReader-0.1.0.gem
 
 ## Usage
 
@@ -41,6 +41,7 @@ Run the below command and follow instructions
 ```
 $ wts-reader
 ```
+All settings and options will be presented in the flow of the program itself.
 
 ## Development
 
