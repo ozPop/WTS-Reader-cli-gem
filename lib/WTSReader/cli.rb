@@ -3,10 +3,7 @@ class Cli
   include Helpers::InstanceMethods
 
   def call
-    # start the reader
-    puts "   >>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<   "
-    puts " >>> Welcome to Web To Speech Reader <<<"
-    puts "   >>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<   "
+    greeting
     input = nil
     until input == "1" || input == "2" || input == "quit"
       first_steps
@@ -25,6 +22,14 @@ class Cli
       url = list_sources
       setup(url)
     end
+  end
+
+  def greeting
+    puts ColorizedString[" >>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<< "].blue
+    print ColorizedString[" >>>"].blue
+    print ColorizedString[" Welcome to Web To Speech Reader "].red.underline
+    print ColorizedString["<<< \n"].blue
+    puts ColorizedString[" >>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<< "].blue    
   end
 
   def first_steps

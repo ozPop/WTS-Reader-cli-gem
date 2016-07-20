@@ -1,5 +1,6 @@
 require "nokogiri"
 require "open-uri"
+require "colorized_string"
 
 # modules
 require_relative "../lib/WTSReader/version"
