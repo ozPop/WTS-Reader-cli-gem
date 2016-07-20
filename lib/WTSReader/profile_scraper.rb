@@ -8,7 +8,7 @@ class Profile
   # guardian
 
   def self.guardian_match?(url)
-    if url.match(/.+theguardian.com.+/i) || url.match(/.+theguardian.co.uk.+/i)
+    if url.match(/.+theguardian.com.+/i) || url.match(/.+newsguardian.co.uk.+/i)
       return :get_guardian_text
     end
     false
