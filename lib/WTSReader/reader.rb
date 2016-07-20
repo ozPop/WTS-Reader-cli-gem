@@ -6,7 +6,6 @@ class Reader
   # default values are set for temporary files with default OSX voice at default rate (in word-per-minute)
   def initialize(url, rate=160, voice='Alex', path='/tmp/', ext='.aac')
     @url = url
-
     @doc = Nokogiri::HTML(open(url))
     @rate = rate
     @voice = voice
@@ -28,7 +27,8 @@ class Reader
     # xpath_noise = ["//*[contains(.,'facebook')]", "//@*[contains(.,'twitter')]", "//@*[contains(.,'whatsapp')]", "//@*[contains(.,'pinterest')]"]
     tag_noise.each {|t| @doc.search(t).remove()}
   end
-  # replaces newlines and escapes quotes in text
+
+  # Replaces newlines and escapes quotes in text
   def get_text
     @text = @title + @doc.text.gsub('\n', ' ').gsub('"', '\"')
     if @text

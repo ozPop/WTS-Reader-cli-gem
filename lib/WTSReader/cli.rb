@@ -108,21 +108,13 @@ class Cli
   # APP START
 
   # start reader instance with defaults or custom settings
-  def start(url, start_type = nil)
-    # default_start returns url string
-    if start_type == nil
-      start_reader(url)
-    elsif start_type.class == Hash
-      start_reader(url, start_type)
-    end
-  end
-
-  def start_reader(url, settings = nil)
+  def start(url, settings = nil)
+    # default_start returns url and nil
     if settings == nil
       settings = load_settings
       Reader.new(url, settings[:rate], settings[:voice]).push_to_say
-    else
-      # initialize Reader with custom settings
+    # initialize Reader with custom settings
+    elsif start_type.class == Hash
       Reader.new(url, settings[:rate], settings[:voice]).push_to_say
       puts ""
       puts "Would you like to save these settings? (y)es or (n)o"
