@@ -77,13 +77,14 @@ class Cli
     case
     when input == "quit"
       return goodbye
+    # loads personalized defaults otherwise original defaults
     # displays defaults, collects URL and starts Reader with defaults
     when input == "1"
       settings = load_settings
       puts ""
       puts "Defaults: Language is English, voice name is #{settings[:voice].capitalize}, rate is #{settings[:rate]}"
       start(url)
-    # custom start collects rate and voice choice
+    # custom_start collects rate and voice choice
     when input == "2"
       start(url, custom_start)
     when input == "3"
@@ -144,6 +145,8 @@ class Cli
     settings
   end
 
+  # make settings dir unless it exists
+  # write to settings.txt the desired settings
   def save_settings(settings)
     %x{ mkdir #{ENV["HOME"]}/.wts-reader } unless File.directory?("#{ENV["HOME"]}/.wts-reader")
     File.open(ENV["HOME"] + "/.wts-reader/settings.txt", 'w') do |file| 
@@ -151,7 +154,7 @@ class Cli
     end
   end
 
-  # loading of settings and handling load error
+  # loading settings and handling load error
   def load_settings
     settings = {}
     begin
@@ -167,8 +170,6 @@ class Cli
       settings
     end
   end
-
-
 
   # RATES
 
