@@ -6,9 +6,11 @@ class Cli
   def call
     greeting
     input = nil
-    until input == "1" || input == "2" || input == "quit"
+    legal_commands = ["1", "2", "quit"]
+    until legal_commands.include?(input)
       first_steps
       input = gets.chomp
+      wrong_input if !legal_commands.include?(input)
     end
     case
     when input == "quit"
@@ -26,19 +28,19 @@ class Cli
   end
 
   def setup(url)
-    languages_and_voices = hash_to_array(VOICES, arr = Array.new)
     legal_commands = ["1", "2", "3", "languages", "rates", "quit"] +
-      languages_and_voices
+      languages
     input = nil
-    until legal_commands.include?(input) == true
+    until legal_commands.include?(input)
       puts ""
       puts ColorizedString["Choose from options below or input a command"].red.underline
       puts ""
       puts "1. Use default WTSReader settings"
       puts "2. Enter custom WTSReader settings"
       puts "3. List available commands"
-      puts ColorizedString["Type 1, 2, or 3 otherwise just enter a command or type 'quit'"].bold
+      puts ColorizedString["Type 1, 2, or 3 otherwise enter a command or type 'quit'"].bold
       input = gets.chomp.downcase
+      wrong_input if !legal_commands.include?(input)
     end
     case
     when input == "quit"

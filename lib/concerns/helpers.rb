@@ -273,6 +273,11 @@ module Helpers
       puts ColorizedString[output].bold
     end
 
+    def wrong_input
+      puts ""
+      puts ColorizedString["Unrecognized command. Please try again"].bold
+    end
+
     def goodbye
       puts ""
       puts ColorizedString["Shutting down..."].red.underline
