@@ -80,10 +80,7 @@ class Cli
     # loads personalized defaults otherwise original defaults
     # displays defaults, collects URL and starts Reader with defaults
     when input == "1"
-      settings = load_settings
-      puts ""
-      puts "Defaults: Language is English, voice name is #{settings[:voice].capitalize}, rate is #{settings[:rate]}"
-      start(url)
+      start(url, default_start)
     # custom_start collects rate and voice choice
     when input == "2"
       start(url, custom_start)
@@ -137,6 +134,24 @@ class Cli
     end
   end
 
+  # default start
+  def default_start
+    settings = load_settings
+    rate = settings[:rate]
+    voice = settings[:voice].downcase
+    language = nil
+    VOICES.each do |key, value|
+       if value.class == Hash
+          value.each_value {|array| language = key.to_s if array.include?(voice)}
+       else
+          language = key.to_s if value.include?(voice)
+      end
+    end
+    puts ""
+    puts "Defaults: Language is #{language.capitalize}, " +
+         "voice name is #{voice.capitalize}, rate is #{rate}"
+  end
+
   # collects custom settings: voice, rate
   def custom_start
     settings = {}
@@ -150,7 +165,7 @@ class Cli
   def save_settings(settings)
     %x{ mkdir #{ENV["HOME"]}/.wts-reader } unless File.directory?("#{ENV["HOME"]}/.wts-reader")
     File.open(ENV["HOME"] + "/.wts-reader/settings.txt", 'w') do |file| 
-      file.write("Voice:#{settings[:voice]}\nRate:#{settings[:rate]}\nPath:#{settings[:path] || '/tmp/'}\n")
+      file.write("Rate:#{settings[:rate]}\nVoice:#{settings[:voice]}\nPath:#{settings[:path] || '/tmp/'}\n")
     end
   end
 
@@ -159,12 +174,12 @@ class Cli
     settings = {}
     begin
       text = IO.readlines(ENV["HOME"] + "/.wts-reader/settings.txt", 'r')[0]
-      settings[:voice] = text.match(/Voice:(\w+)\n/).captures[0]
       settings[:rate] = text.match(/Rate:(\w+)\n/).captures[0].to_i
+      settings[:voice] = text.match(/Voice:(\w+)\n/).captures[0]
       settings[:path] = text.match(/Path:(.+)\n/).captures[0]
       settings
     rescue
-      settings = {:voice => "Alex", :rate => 160, :path => '/tmp/'}
+      settings = {:rate => 160, :voice => "Alex", :path => '/tmp/'}
       save_settings(settings)
       puts "Settings file (#{ENV["HOME"]}/.wts-reader/settings.txt) does not exist or has become corrupted. Creating new file with default settings"
       settings
