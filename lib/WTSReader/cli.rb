@@ -134,7 +134,7 @@ class Cli
     end
   end
 
-  # default start
+  # default start uses settings to output details about defaults
   def default_start
     settings = load_settings
     rate = settings[:rate]

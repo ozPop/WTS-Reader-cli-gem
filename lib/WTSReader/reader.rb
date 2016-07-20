@@ -16,11 +16,6 @@ class Reader
     @filename = Random.new.to_s.split(':')[1][0..-2]
   end
 
-  # NOTE: text will likely get removed in future
-  def text
-    @doc.text
-  end
-
   ## HTML PARSING
   def set_title
     @title = @doc.title
@@ -39,37 +34,6 @@ class Reader
     if @text
       true
     end
-  end
-
-  ## INTERFACE WITH SAY
-  # execute: creating dir and saving settings
-  def save_settings
-    %x{ mkdir #{ENV["HOME"]}/.wts-reader } unless File.directory?("#{ENV["HOME"]}/.wts-reader")
-    File.open(ENV["HOME"] + "/.wts-reader/settings.txt", 'w') {|file| file.write("Voice:#{@voice}\nRate:#{@rate}\nPath:#{@path}\n")}
-  end
-
-  # loading of settings and handling load error
-  def load_settings
-    begin
-      text = IO.readlines(ENV["HOME"] + "/.wts-reader/settings.txt", 'r')[0]
-      @voice = text.match(/Voice:(\w+)\n/).captures[0]
-      @rate = text.match(/Rate:(\w+)\n/).captures[0].to_i
-      @path = text.match(/Path:(.+)\n/).captures[0]
-    rescue
-      save_settings
-      "Settings file (#{ENV["HOME"]}/.wts-reader/settings.txt) does not exist or has become corrupted. Creating new file with default settings"
-    end
-  end
-
-  # sets the voice manually. this will have to be built out with the cli
-  def set_voice(voice)
-    # Hash of {:language => [voice1, voice2, ...], language2 => [...], ...} goes here
-    @voice = voice
-  end
-
-  def set_speed(rate)
-    # allows user to set words-per-minute manually
-    return @rate = rate if rate.is_a?(Integer)
   end
 
   def get_file_location

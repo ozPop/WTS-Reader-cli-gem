@@ -2,19 +2,29 @@
 
 ## Workload breakdown
 
-Ozzie
+### Ozzie
 * Create a starting Readme.md
 * Write project details
-* Write CLI user exprerience such as
-    * greetting the user
-    * giving lang and voice choices
+* Create a data structure modelded after text-to-speech languages and voices
+* Write CLI user exprerience:
+    * Various display prompts to guide user through the program
+        * Collecting web address or giving a list of article choices
+        * Allowing to choose default settings or customized playback settings
+        * Help commands to view available languages, voices, suggested rates
+* Refactoring overall project structure
+    * Write helper methods to control outputs
 
   
-Blaze
-* add coding done so far
-    * HTML sanitization to Reader class
-    * Reader class intefacing with text-to-speech
-    * 
+### Blaze
+* Setup the main Reader and Profile class
+    * Reader responsible for web document parsing and interfacing with say
+    * Profile responsible for handling specific web content
+* Web page parsing and sanitization
+    * Removal of various web page formating noise
+* Reader class intefacing with text-to-speech (built-in say program)
+    * Start text-to-speech with provided settings
+* Implement settings saving and loading
+* Handling of audio files
 
 ----
 
@@ -24,53 +34,24 @@ Blaze
 
 * Nokogiri
 * OpenURI
+* Colorize
 
 ## Rough Program Flow
 
 ----
 
-1. Prompt user to input URL or type "View available sources"
-    * Available sources lists site choices
-        * Lists available articles
-2. Gem scrapes the URL or Article
-  * Cleanses the content of the URL and prepares to send
-3. Shows the user default settings (e.g.: Engish, Voice-name, Read-speed) and asks if to play with default or change settings
-    * If user wants to change settings
-        * Choose different language
-            * Show available voices
-        * Allow user to change read-speed
-4. Push the data to the say program
-5. Open with default media player
-6. Give an option to permanently save the file (promting user for a path)
-7. Asks user if she wants to start another wts-read session
+1. Greet and prompt user to input web address or to view available sources
+    * Available sources lists guardian tech articles
+2. Gem scrapes the web page or chosen article
+    * It cleanses the content of all intrusive noise leaving only target content
+3. The gem initializes with default settings (e.g.: Engish, Voice-name, Read-speed)
+    * Gives the user options to run with defaults or customize settings
+        * If user chooses to customize
+            * User is promted to choose the rate of speech (wpm)
+            * User can choose a different language and voice
+4. Upon choosing defaults or customizing settings
+    * The program initializes the say program with provided settings
+5. Gem opens system default media player
+6. Gives an option to permanently save chosen custom settings
+7. Stores the audio file in /tmp and lets the system handle the file
 
-## Expanding on above points
-
-----
-
-### 3. Handling Language and Voice
-
-* Store the language and voice name relationships in a hash
-* On command return a list of available languages and voices
-* They can either put in the langugage they want it spoken in with a default voice or choose another voice
-* They can put the name of the voice and language is auto set
-    * Create a hash that stores all lang and voice choices 
-        * All available Languages and names: prefrerences > Dictation & speech > text to speech > system voices select > customize
-        * Example hash: voices = {chinese => [tik tak toe]}
-
-### Handling files
-
-  * Save all files to /tmp and that takes care of space management automatically
-
-
-### Text to speech software access usding command line
-
-OS X
-* use 'say' command to use the software
-* 'man say' to see manual
-
-Ruby
-* %x{ say "Hello world." }
-
-Linux
-* possibly add support after we get OS X down
