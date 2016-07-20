@@ -36,13 +36,13 @@ module Voices
       :bulgium => ["ellen"],
       :netherlands => ["claire", "xander"]
     },
-    :finnsih => ["satu"],
+    :finnish => ["satu"],
     :french => {
       :canada => ["amelie", "chantal", "nicolas"],
       :france => ["audrey", "aurelie", "thomas"]
     },
     :german => ["anna", "markus", "petra", "yannick"],
-    :greek => ["melina", "nikos"],
+    :greek => ["melina"],
     :hebrew => ["carmit"],
     :hindi => ["lekha"],
     :hungarian => ["mariska"],
@@ -57,7 +57,7 @@ module Voices
       :portugal => ["catarina", "joana"]
     },
     :romanian => ["ioana"],
-    :russian => ["katya", "milena", "yuri"],
+    :russian => ["milena", "yuri"],
     :slovak => ["laura"],
     :spanish => {
       :argentina => ["diego"],
@@ -65,8 +65,8 @@ module Voices
       :mexico => ["angelica", "juan", "paulina"],
       :spain => ["jorge", "monica"]
     },
-    :swedish => ["alva", "klara", "oskar"],
+    :swedish => ["alva"],
     :thai => ["kanya"],
-    :turkish => ["cem", "yelda"]
+    :turkish => ["yelda"]
   }
 end
