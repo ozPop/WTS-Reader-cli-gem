@@ -32,12 +32,12 @@ class Cli
     input = nil
     until legal_commands.include?(input) == true
       puts ""
-      puts "Choose from options below or input a command"
-      puts "----------------------------------------------------------"
+      puts ColorizedString["Choose from options below or input a command"].red.underline
+      puts ""
       puts "1. Use default WTSReader settings"
       puts "2. Enter custom WTSReader settings"
       puts "3. List available commands"
-      puts "Type 1, 2, or 3 otherwise just enter a command or type 'quit'"
+      puts ColorizedString["Type 1, 2, or 3 otherwise just enter a command or type 'quit'"].bold
       input = gets.chomp.downcase
     end
     case

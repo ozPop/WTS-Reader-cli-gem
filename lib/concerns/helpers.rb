@@ -19,12 +19,13 @@ module Helpers
       sources = Profile.get_guardian_headlines
       # prints out numbered articles
       sources.each do |key, value|
-        puts "#{key}. #{value[0]}"
+        puts ColorizedString["#{key}."].red + " #{value[0]}"
       end
       # asks for input
       input = choose_source(sources)
       choice = sources[input][0]
-      puts "You have chosen: #{choice}"
+      print ColorizedString["You have chosen:"].red
+      puts ColorizedString[" #{choice}"].underline
       sources[input][1]
     end
 
@@ -33,7 +34,7 @@ module Helpers
       input = nil
       until (1..sources.count).member?(input)
         puts ""
-        puts "Please enter a number of desired article"
+        puts ColorizedString["Please enter a number of desired article"].bold
         input = gets.chomp.to_i
       end
       input
@@ -51,11 +52,11 @@ module Helpers
       elsif settings.class == Hash
         Reader.new(url, settings[:rate], settings[:voice]).push_to_say
         puts ""
-        puts "Would you like to save these settings? (y)es or (n)o"
+        puts ColorizedString["Would you like to save these settings? (y)es or (n)o"].bold
         input = gets.chomp.downcase
         if input == "y" || input == "yes"
           save_settings(settings)
-          puts "Settings saved to ~/.wts-reader/"
+          puts ColorizedString["Settings saved to ~/.wts-reader/"].red.underline
         end
       end
     end
@@ -74,8 +75,8 @@ module Helpers
         end
       end
       puts ""
-      puts "Defaults: Language is #{language.capitalize}, " +
-           "voice name is #{voice.capitalize}, rate is #{rate}"
+      puts ColorizedString["Defaults: Language is #{language.capitalize}, " +
+           "voice name is #{voice.capitalize}, rate is #{rate}"].bold
     end
 
     # collects custom settings: voice, rate
@@ -109,7 +110,7 @@ module Helpers
       rescue
         settings = {:rate => 160, :voice => "Alex", :path => '/tmp/'}
         save_settings(settings)
-        puts "Settings file (#{ENV["HOME"]}/.wts-reader/settings.txt) does not exist or has become corrupted. Creating new file with default settings"
+        puts ColorizedString["Settings file (#{ENV["HOME"]}/.wts-reader/settings.txt) does not exist or has become corrupted. Creating new file with default settings"].red
         settings
       end
     end
@@ -129,7 +130,7 @@ module Helpers
       legal_rate_range = 50..400
       display_suggested_rates
       puts ""
-      puts "Please enter suggested or custom rate (50-400)"
+      puts ColorizedString["Please enter suggested or custom rate (50-400)"].bold
       input = nil
       until legal_rate_range.member?(input)
         input = gets.chomp.to_i
@@ -161,7 +162,7 @@ module Helpers
           display_helper(input)
         end
         puts ""
-        puts "Please enter voice name or 'help' to see commands"
+        puts ColorizedString["Please enter voice name or 'help' to see commands"].bold
         input = gets.chomp.downcase
       end
       input
@@ -203,16 +204,17 @@ module Helpers
 
     def first_steps
       puts ""
-      puts "What do you want to do?"
+      puts ColorizedString["What do you want to do?"].red
       puts "  1. Enter my own URL"
       puts "  2. See available sources"
-      puts "Please enter 1 or 2 otherwise type 'quit'"
+      puts ColorizedString["Please enter 1 or 2 otherwise type 'quit'"].bold
     end
 
     def cli_commands
       puts ""
-      puts "Available commands:"
-      puts "----------------------------------------------------------"
+      puts ColorizedString[" >>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<< "].blue
+      puts ColorizedString["           Available commands:           "].red
+      puts ColorizedString[" >>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<< "].blue    
       puts "Type 'languages' to view available languages"
       puts "Type 'english' to view available voice names"
       puts "Type 'rates' to view playback speed presets"
@@ -241,16 +243,16 @@ module Helpers
         end
       end
       puts ""
-      puts output
+      puts ColorizedString[output].bold
     end
 
     def display_language_details(language)
       puts ""
-      puts "#{language.capitalize}"
-      puts "----------------------------------------------------------"
+      puts ColorizedString["#{language.capitalize}"].red.underline
+      puts ""
       if VOICES[language.to_sym].class == Hash
         VOICES[language.to_sym].each do |country, voices|
-          puts "#{country.to_s.capitalize}:"
+          puts ColorizedString["#{country.to_s.capitalize}:"].red.underline
           display_columns(voices)
           puts ""
         end
@@ -268,12 +270,12 @@ module Helpers
         output += "(default)" if value == 160
         output += "\n"
       end
-      puts output
+      puts ColorizedString[output].bold
     end
 
     def goodbye
       puts ""
-      puts "Shutting down..."
+      puts ColorizedString["Shutting down..."].red.underline
     end
   end # end CliOutputMethods
 
