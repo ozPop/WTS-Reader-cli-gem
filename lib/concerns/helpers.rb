@@ -257,7 +257,9 @@ module Helpers
       puts ""
       if VOICES[language.to_sym].class == Hash
         VOICES[language.to_sym].each do |country, voices|
-          puts ColorizedString["#{country.to_s.capitalize}:"].red.underline
+          # process country name for proper output
+          country = country.to_s.split("_").map(&:capitalize).join(" ")
+          puts ColorizedString["#{country}:"].red.underline
           display_columns(voices)
           puts ""
         end
