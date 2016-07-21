@@ -177,25 +177,9 @@ module Helpers
     # LANGUAGES
 
     def languages
-      array = []
-      VOICES.each_key {|key| array << key.to_s}
-      array
+      VOICES.keys.map(&:to_s)
     end
 
-    # takes in a hash and array. returns array with all hash internals
-    # itterates (recursive) pusing all keys and values to given array
-    def hash_to_array(hash, array)
-      hash.each do |key, value|
-        if value.class == Hash
-          array << key.to_s
-          hash_to_array(value, array)
-        else
-          array << key.to_s
-          array << value
-        end
-      end
-      array.flatten
-    end
   end # end CliController
 
   module CliOutputMethods
