@@ -16,10 +16,12 @@ class Cli
     when input == "quit"
       goodbye
     when input == "1"
-      puts ""
-      puts "Please enter a web address"
-      url = gets.chomp
-      setup(url)
+      url = validate_input
+      if url == "quit"
+        call
+      else
+        setup(url)
+      end
     when input == "2"
       # show user list of available read sources and collects URL choice
       url = list_sources

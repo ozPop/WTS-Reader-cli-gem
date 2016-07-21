@@ -12,6 +12,23 @@ module Helpers
 
   module CliController
     include Voices
+
+    def validate_input
+      input = nil
+      until input != nil || input == "quit"
+        puts ""
+        puts ColorizedString["Please enter a web address or type 'quit'"].red.underline
+        puts ""
+        input = gets.chomp
+        check = /((https?):\/\/|www\.)[^\s\/$.?#].[^\s]*/.match(input) != nil
+        if !check && input != "quit"
+          wrong_input
+          input = nil
+        end
+      end
+      input
+    end
+
     # LISTING ARTICLES
 
     # returns guardian tech section articles
@@ -50,13 +67,16 @@ module Helpers
         Reader.new(url, settings[:rate], settings[:voice]).push_to_say
       # initialize Reader with custom settings
       elsif settings.class == Hash
-        Reader.new(url, settings[:rate], settings[:voice]).push_to_say
-        puts ""
-        puts ColorizedString["Would you like to save these settings? (y)es or (n)o"].bold
-        input = gets.chomp.downcase
-        if input == "y" || input == "yes"
-          save_settings(settings)
-          puts ColorizedString["Settings saved to ~/.wts-reader/"].red.underline
+        # depends on push_to_say to handle voice-not-found error
+        if Reader.new(url, settings[:rate], settings[:voice]).push_to_say
+          puts ""
+          puts ColorizedString["Would you like to save these settings? (y)es or (n)o"].bold
+          input = gets.chomp.downcase
+          if input == "y" || input == "yes"
+            save_settings(settings)
+            puts ColorizedString["Settings saved to ~/.wts-reader/"].red.underline
+          end
+          goodbye
         end
       end
     end
@@ -80,9 +100,13 @@ module Helpers
     end
 
     # collects custom settings: voice, rate
-    def custom_start
+    def custom_start(rate = nil)
       settings = {}
-      settings[:rate] = collect_rate_setting
+      if rate == nil
+        settings[:rate] = collect_rate_setting
+      else
+        settings[:rate] = rate
+      end
       settings[:voice] = collect_voice_setting
       settings
     end
@@ -170,24 +194,10 @@ module Helpers
 
     # LANGUAGES
 
-    def languages 
-      VOICES.keys
+    def languages
+      VOICES.keys.map(&:to_s)
     end
 
-    # takes in a hash and array. returns array with all hash internals
-    # itterates (recursive) pusing all keys and values to given array
-    def hash_to_array(hash, array)
-      hash.each do |key, value|
-        if value.class == Hash
-          array << key.to_s
-          hash_to_array(value, array)
-        else
-          array << key.to_s
-          array << value
-        end
-      end
-      array.flatten
-    end
   end # end CliController
 
   module CliOutputMethods
@@ -250,7 +260,9 @@ module Helpers
       puts ""
       if VOICES[language.to_sym].class == Hash
         VOICES[language.to_sym].each do |country, voices|
-          puts ColorizedString["#{country.to_s.capitalize}:"].red.underline
+          # process country name for proper output
+          country = country.to_s.split("_").map(&:capitalize).join(" ")
+          puts ColorizedString["#{country}:"].red.underline
           display_columns(voices)
           puts ""
         end
@@ -273,7 +285,13 @@ module Helpers
 
     def wrong_input
       puts ""
-      puts ColorizedString["Unrecognized command. Please try again"].bold
+      puts ColorizedString["Unrecognized input. Please try again"].bold
+    end
+
+    def voice_not_available(voice)
+      puts ""
+      puts ColorizedString["The voice you entered needs to be downloaded."].red
+      puts ColorizedString["Please use Dictation and Speech in preferences to download #{voice.capitalize} voice."].bold
     end
 
     def goodbye

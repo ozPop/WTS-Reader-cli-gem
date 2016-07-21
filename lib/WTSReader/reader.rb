@@ -1,4 +1,7 @@
 class Reader
+  include Voices
+  include Helpers::CliController
+  include Helpers::CliOutputMethods
   # every instance of Reader can only have one document
   attr_reader :doc
   # `say` settings can be changed dynamically
@@ -49,11 +52,20 @@ class Reader
       get_text
       text = @text
     end
-    %x{ say -r #{@rate} -v #{@voice} -o #{get_file_location} \"#{text}\" }
-    begin
-      %x{ open #{get_file_location} }
-    rescue
-      %x{ open #{@path + @filename + ".aiff"} }
+    # output is used to handle "Voice not found error"
+    output = system "say -r #{@rate} -v #{@voice} -o #{get_file_location} \"#{text}\" "
+    if !output
+      # when voice not found print message and re-run custom_start
+      voice_not_available(@voice)
+      start(@url, custom_start(@rate))
+      # false kills the previous "custom_start execution"
+      false
+    else
+      begin
+        %x{ open #{get_file_location} }
+      rescue
+        %x{ open #{@path + @filename + ".aiff"} }
+      end
     end
   end
 end
