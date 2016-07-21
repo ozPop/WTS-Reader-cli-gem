@@ -76,6 +76,7 @@ module Helpers
             save_settings(settings)
             puts ColorizedString["Settings saved to ~/.wts-reader/"].red.underline
           end
+          goodbye
         end
       end
     end
