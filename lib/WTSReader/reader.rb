@@ -37,7 +37,7 @@ class Reader
   end
 
   def get_file_location
-    @path + @filename + @ext
+    path + filename + @ext
   end
 
   def push_to_say

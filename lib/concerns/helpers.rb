@@ -170,10 +170,8 @@ module Helpers
 
     # LANGUAGES
 
-    def languages
-      array = []
-      VOICES.each_key {|key| array << key.to_s}
-      array
+    def languages 
+      VOICES.keys
     end
 
     # takes in a hash and array. returns array with all hash internals
