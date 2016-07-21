@@ -13,18 +13,20 @@ module Helpers
   module CliController
     include Voices
 
-    def validate_url
-      url = nil
-      until url != nil
+    def validate_input
+      input = nil
+      until input != nil || input == "quit"
         puts ""
-        puts ColorizedString["Please enter a web address"].red.underline
+        puts ColorizedString["Please enter a web address or type 'quit'"].red.underline
         puts ""
-        url = gets.chomp
-        if /((https?):\/\/|www\.)[^\s\/$.?#].[^\s]*/.match(url) == nil
+        input = gets.chomp
+        check = /((https?):\/\/|www\.)[^\s\/$.?#].[^\s]*/.match(input) != nil
+        if !check && input != "quit"
           wrong_input
-          url = nil
+          input = nil
         end
       end
+      input
     end
 
     # LISTING ARTICLES
