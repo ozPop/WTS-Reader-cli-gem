@@ -8,8 +8,7 @@
 
 Web To Speech Reader Cli gem uses OS X text-to-speech capabilities to read
 certain web pages to the user.
-For best results please limit usage to [The Guardian News US](https://www.theguardian.com/us) 
-and [The Guardian News UK](http://www.newsguardian.co.uk/).
+For best results please limit usage to [The Guardian News US](https://www.theguardian.com/us).
 The gem takes in a web address or provides a list of sources to choose from. 
 In either case the program initiates a spoken version of the content of a chosen 
 web page using built in text-to-speech software on your Mac.
@@ -21,16 +20,16 @@ web page using built in text-to-speech software on your Mac.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'WTSReader'
+gem 'WTSReader', :git => 'git://github.com/ozPop/WTS-Reader-cli-gem.git'
 ```
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
+Or install it yourself by downloading the .gem file, navigating to the download directory,  and running:
 
-    $ gem install WTSReader
+    $ gem install ./WTSReader-0.1.0.gem
 
 ## Usage
 
@@ -41,6 +40,7 @@ Run the below command and follow instructions
 ```
 $ wts-reader
 ```
+All settings and options will be presented in the flow of the program itself.
 
 ## Development
 
