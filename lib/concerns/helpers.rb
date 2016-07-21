@@ -50,13 +50,15 @@ module Helpers
         Reader.new(url, settings[:rate], settings[:voice]).push_to_say
       # initialize Reader with custom settings
       elsif settings.class == Hash
-        Reader.new(url, settings[:rate], settings[:voice]).push_to_say
-        puts ""
-        puts ColorizedString["Would you like to save these settings? (y)es or (n)o"].bold
-        input = gets.chomp.downcase
-        if input == "y" || input == "yes"
-          save_settings(settings)
-          puts ColorizedString["Settings saved to ~/.wts-reader/"].red.underline
+        # depends on push_to_say to handle voice-not-found error
+        if Reader.new(url, settings[:rate], settings[:voice]).push_to_say
+          puts ""
+          puts ColorizedString["Would you like to save these settings? (y)es or (n)o"].bold
+          input = gets.chomp.downcase
+          if input == "y" || input == "yes"
+            save_settings(settings)
+            puts ColorizedString["Settings saved to ~/.wts-reader/"].red.underline
+          end
         end
       end
     end
@@ -80,9 +82,13 @@ module Helpers
     end
 
     # collects custom settings: voice, rate
-    def custom_start
+    def custom_start(rate = nil)
       settings = {}
-      settings[:rate] = collect_rate_setting
+      if rate == nil
+        settings[:rate] = collect_rate_setting
+      else
+        settings[:rate] = rate
+      end
       settings[:voice] = collect_voice_setting
       settings
     end
@@ -276,6 +282,12 @@ module Helpers
     def wrong_input
       puts ""
       puts ColorizedString["Unrecognized command. Please try again"].bold
+    end
+
+    def voice_not_available(voice)
+      puts ""
+      puts ColorizedString["The voice you entered needs to be downloaded."].red
+      puts ColorizedString["Please use Dictation and Speech in preferences to download #{voice.capitalize} voice."].bold
     end
 
     def goodbye
