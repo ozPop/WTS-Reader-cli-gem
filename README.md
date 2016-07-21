@@ -8,8 +8,7 @@
 
 Web To Speech Reader Cli gem uses OS X text-to-speech capabilities to read
 certain web pages to the user.
-For best results please limit usage to [The Guardian News US](https://www.theguardian.com/us) 
-and [The Guardian News UK](http://www.newsguardian.co.uk/).
+For best results please limit usage to [The Guardian News US](https://www.theguardian.com/us).
 The gem takes in a web address or provides a list of sources to choose from. 
 In either case the program initiates a spoken version of the content of a chosen 
 web page using built in text-to-speech software on your Mac.
