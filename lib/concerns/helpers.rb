@@ -12,6 +12,21 @@ module Helpers
 
   module CliController
     include Voices
+
+    def validate_url
+      url = nil
+      until url != nil
+        puts ""
+        puts ColorizedString["Please enter a web address"].red.underline
+        puts ""
+        url = gets.chomp
+        if /((https?):\/\/|www\.)[^\s\/$.?#].[^\s]*/.match(url) == nil
+          wrong_input
+          url = nil
+        end
+      end
+    end
+
     # LISTING ARTICLES
 
     # returns guardian tech section articles
@@ -265,7 +280,7 @@ module Helpers
 
     def wrong_input
       puts ""
-      puts ColorizedString["Unrecognized command. Please try again"].bold
+      puts ColorizedString["Unrecognized input. Please try again"].bold
     end
 
     def voice_not_available(voice)
