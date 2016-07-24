@@ -15,13 +15,13 @@ module Helpers
 
     def validate_input
       input = nil
-      until input != nil || input == "quit"
+      until input != nil || input == "back"
         puts ""
-        puts ColorizedString["Please enter a web address or type 'quit'"].red.underline
+        puts ColorizedString["Please enter a web address or type 'back'"].red.underline
         puts ""
         input = gets.chomp
         check = /((https?):\/\/|www\.)[^\s\/$.?#].[^\s]*/.match(input) != nil
-        if !check && input != "quit"
+        if !check && input != "back"
           wrong_input
           input = nil
         end
