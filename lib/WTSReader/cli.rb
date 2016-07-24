@@ -17,7 +17,7 @@ class Cli
       goodbye
     when input == "1"
       url = validate_input
-      if url == "quit"
+      if url == "back"
         call
       else
         setup(url)
