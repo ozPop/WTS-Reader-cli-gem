@@ -44,9 +44,10 @@ class Reader
   end
 
   def push_to_say
-    match = Profile.any_matches?(@url)
+    profile = Profile.new(@doc, @url)
+    match = profile.any_matches?
     if match 
-      text = Profile.send(match, @doc) 
+      text = profile.send(match) 
     else
       sanitize_document
       get_text
